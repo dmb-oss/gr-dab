@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API control_stream_to_tag_cc : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<control_stream_to_tag_cc> sptr;
+      typedef std::shared_ptr<control_stream_to_tag_cc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::control_stream_to_tag_cc.

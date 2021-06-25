@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API unpuncture_vff : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<unpuncture_vff> sptr;
+      typedef std::shared_ptr<unpuncture_vff> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::unpuncture_vff.

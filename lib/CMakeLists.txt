@@ -76,17 +76,17 @@ if(NOT dab_sources)
     return()
 endif(NOT dab_sources)
 
-add_library(gnuradio-dab SHARED ${dab_sources})
-target_link_libraries(gnuradio-dab gnuradio::gnuradio-runtime gnuradio::gnuradio-filter ${FAAD_LIBRARIES})
-target_include_directories(gnuradio-dab
+add_library(gnuradio-grdab SHARED ${dab_sources})
+target_link_libraries(gnuradio-grdab gnuradio::gnuradio-runtime gnuradio::gnuradio-filter ${FAAD_LIBRARIES})
+target_include_directories(gnuradio-grdab
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PUBLIC $<INSTALL_INTERFACE:include>
   )
-set_target_properties(gnuradio-dab PROPERTIES DEFINE_SYMBOL "gnuradio_dab_EXPORTS")
-set_target_properties(gnuradio-dab PROPERTIES SOVERSION 3.8.0)
+set_target_properties(gnuradio-grdab PROPERTIES DEFINE_SYMBOL "gnuradio_grdab_EXPORTS")
+set_target_properties(gnuradio-grdab PROPERTIES SOVERSION 3.8.0)
 
 if(APPLE)
-    set_target_properties(gnuradio-dab PROPERTIES
+    set_target_properties(gnuradio-grdab PROPERTIES
         INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
     )
 endif(APPLE)
@@ -95,7 +95,7 @@ endif(APPLE)
 # Install built library files
 ########################################################################
 include(GrMiscUtils)
-GR_LIBRARY_FOO(gnuradio-dab)
+GR_LIBRARY_FOO(gnuradio-grdab)
 
 ########################################################################
 # Print summary
@@ -114,7 +114,7 @@ include(GrTest)
 list(APPEND test_dab_sources
 )
 # Anything we need to link to for the unit tests go here
-list(APPEND GR_TEST_TARGET_DEPS gnuradio-dab)
+list(APPEND GR_TEST_TARGET_DEPS gnuradio-grdab)
 
 if(NOT test_dab_sources)
     MESSAGE(STATUS "No C++ unit tests... skipping")

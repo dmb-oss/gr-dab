@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API modulo_ff : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<modulo_ff> sptr;
+      typedef std::shared_ptr<modulo_ff> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::modulo_ff.

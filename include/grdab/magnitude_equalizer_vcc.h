@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API magnitude_equalizer_vcc : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<magnitude_equalizer_vcc> sptr;
+      typedef std::shared_ptr<magnitude_equalizer_vcc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::magnitude_equalizer_vcc.

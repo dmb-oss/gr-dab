@@ -96,7 +96,7 @@ ENDIF()
 ########################################################################
 # Install directories
 ########################################################################
-find_package(Gnuradio "3.8" REQUIRED COMPONENTS blocks filter fft)
+find_package(Gnuradio "3.9" REQUIRED COMPONENTS blocks filter fft)
 include(GrVersion)
 
 include(GrPlatform) #define LIB_SUFFIX
@@ -105,8 +105,8 @@ if(NOT CMAKE_MODULES_DIR)
   set(CMAKE_MODULES_DIR lib${LIB_SUFFIX}/cmake)
 endif(NOT CMAKE_MODULES_DIR)
 
-set(GR_INCLUDE_DIR      include/dab)
-set(GR_CMAKE_DIR        ${CMAKE_MODULES_DIR}/dab)
+set(GR_INCLUDE_DIR      include/grdab)
+set(GR_CMAKE_DIR        ${CMAKE_MODULES_DIR}/grdab)
 set(GR_PKG_DATA_DIR     ${GR_DATA_DIR}/${CMAKE_PROJECT_NAME})
 set(GR_PKG_DOC_DIR      ${GR_DOC_DIR}/${CMAKE_PROJECT_NAME})
 set(GR_PKG_CONF_DIR     ${GR_CONF_DIR}/${CMAKE_PROJECT_NAME}/conf.d)
@@ -137,6 +137,7 @@ endif(APPLE)
 ########################################################################
 find_package(Doxygen)
 find_package(CppUnit)
+find_package(pybind11 REQUIRED)
 
 ########################################################################
 # Setup doxygen option
@@ -167,7 +168,6 @@ add_subdirectory(include/grdab)
 add_subdirectory(lib)
 add_subdirectory(apps)
 add_subdirectory(docs)
-add_subdirectory(swig)
 add_subdirectory(python)
 add_subdirectory(grc)
 

@@ -39,7 +39,7 @@ namespace gr {
     class DAB_API peak_detector_fb : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<peak_detector_fb> sptr;
+      typedef std::shared_ptr<peak_detector_fb> sptr;
 
       /*!
        * Make a peak detector block.

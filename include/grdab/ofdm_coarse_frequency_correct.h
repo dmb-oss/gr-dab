@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API ofdm_coarse_frequency_correct : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<ofdm_coarse_frequency_correct> sptr;
+      typedef std::shared_ptr<ofdm_coarse_frequency_correct> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::ofdm_coarse_frequency_correct.

@@ -37,7 +37,7 @@ namespace gr {
     class DAB_API mp4_decode_bs : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<mp4_decode_bs> sptr;
+      typedef std::shared_ptr<mp4_decode_bs> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::mp4_decode_bs.

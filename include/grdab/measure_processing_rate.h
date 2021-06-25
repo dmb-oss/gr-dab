@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API measure_processing_rate : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<measure_processing_rate> sptr;
+      typedef std::shared_ptr<measure_processing_rate> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::measure_processing_rate.

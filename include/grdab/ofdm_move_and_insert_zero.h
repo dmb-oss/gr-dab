@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API ofdm_move_and_insert_zero : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<ofdm_move_and_insert_zero> sptr;
+      typedef std::shared_ptr<ofdm_move_and_insert_zero> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::ofdm_move_and_insert_zero.

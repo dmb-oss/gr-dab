@@ -35,7 +35,7 @@ namespace gr {
     class DAB_API firecode_check_bb : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<firecode_check_bb> sptr;
+      typedef std::shared_ptr<firecode_check_bb> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::firecode_check_bb.

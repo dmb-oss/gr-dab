@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API fib_sink_vb : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<fib_sink_vb> sptr;
+      typedef std::shared_ptr<fib_sink_vb> sptr;
 
 
       /*!

@@ -1,5 +1,5 @@
 INCLUDE(FindPkgConfig)
-PKG_CHECK_MODULES(PC_DAB dab)
+PKG_CHECK_MODULES(PC_DAB grdab)
 
 FIND_PATH(
     DAB_INCLUDE_DIRS
@@ -13,7 +13,7 @@ FIND_PATH(
 
 FIND_LIBRARY(
     DAB_LIBRARIES
-    NAMES gnuradio-dab
+    NAMES gnuradio-grdab
     HINTS $ENV{DAB_DIR}/lib
         ${PC_DAB_LIBDIR}
     PATHS ${CMAKE_INSTALL_PREFIX}/lib

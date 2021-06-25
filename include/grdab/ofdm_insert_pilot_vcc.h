@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API ofdm_insert_pilot_vcc : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<ofdm_insert_pilot_vcc> sptr;
+      typedef std::shared_ptr<ofdm_insert_pilot_vcc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::ofdm_insert_pilot_vcc.

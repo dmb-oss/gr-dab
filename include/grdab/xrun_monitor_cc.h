@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API xrun_monitor_cc : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<xrun_monitor_cc> sptr;
+      typedef std::shared_ptr<xrun_monitor_cc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of grdab::xrun_monitor_cc.

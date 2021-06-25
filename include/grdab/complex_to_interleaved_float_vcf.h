@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API complex_to_interleaved_float_vcf : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<complex_to_interleaved_float_vcf> sptr;
+      typedef std::shared_ptr<complex_to_interleaved_float_vcf> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::complex_to_interleaved_float_vcf.

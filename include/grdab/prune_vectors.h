@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API prune_vectors : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<prune_vectors> sptr;
+      typedef std::shared_ptr<prune_vectors> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::prune_vectors.

@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API reed_solomon_decode_bb : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<reed_solomon_decode_bb> sptr;
+      typedef std::shared_ptr<reed_solomon_decode_bb> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::reed_solomon3_bb.

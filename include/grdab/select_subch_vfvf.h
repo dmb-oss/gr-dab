@@ -44,7 +44,7 @@ namespace gr {
     class DAB_API select_subch_vfvf : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<select_subch_vfvf> sptr;
+      typedef std::shared_ptr<select_subch_vfvf> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::select_subch_vfvf.

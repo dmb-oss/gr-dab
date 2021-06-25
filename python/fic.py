@@ -24,7 +24,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, trellis, blocks
-from . import grdab_swig as grdab
+import grdab
 from math import sqrt
 
 """

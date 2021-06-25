@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API fractional_interpolator_triggered_update_cc : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<fractional_interpolator_triggered_update_cc> sptr;
+      typedef std::shared_ptr<fractional_interpolator_triggered_update_cc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::fractional_interpolator_triggered_update_cc.

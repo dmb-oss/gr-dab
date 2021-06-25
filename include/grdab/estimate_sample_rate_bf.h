@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API estimate_sample_rate_bf : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<estimate_sample_rate_bf> sptr;
+      typedef std::shared_ptr<estimate_sample_rate_bf> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::estimate_sample_rate_bf.

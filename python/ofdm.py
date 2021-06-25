@@ -154,11 +154,10 @@ class ofdm_demod(gr.hier_block2):
 		# input filtering
 		if self.rp.input_fft_filter: 
 			if verbose: print("--> RX filter enabled")
-			lowpass_taps = filter.firdes_low_pass(1.0,                     # gain
+			lowpass_taps = filter.firdes.low_pass(1.0,                     # gain
 							  dp.sample_rate,          # sampling rate
 							  rp.filt_bw,              # cutoff frequency
-							  rp.filt_tb,              # width of transition band
-							  filter.firdes.WIN_HAMMING)   # Hamming window
+							  rp.filt_tb)              # width of transition band
 			self.fft_filter = filter.fft_filter_ccc(1, lowpass_taps)
 		
 

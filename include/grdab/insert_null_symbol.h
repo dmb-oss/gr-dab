@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API insert_null_symbol : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<insert_null_symbol> sptr;
+      typedef std::shared_ptr<insert_null_symbol> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::insert_null_symbol.

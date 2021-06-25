@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API qpsk_mapper_vbc : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<qpsk_mapper_vbc> sptr;
+      typedef std::shared_ptr<qpsk_mapper_vbc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::qpsk_mapper_vbc.

@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API select_vectors : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<select_vectors> sptr;
+      typedef std::shared_ptr<select_vectors> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::select_vectors.

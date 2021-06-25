@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API qpsk_demapper_vcb : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<qpsk_demapper_vcb> sptr;
+      typedef std::shared_ptr<qpsk_demapper_vcb> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::qpsk_demapper_vcb.

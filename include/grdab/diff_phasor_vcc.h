@@ -36,7 +36,7 @@ namespace gr {
     class DAB_API diff_phasor_vcc : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<diff_phasor_vcc> sptr;
+      typedef std::shared_ptr<diff_phasor_vcc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of dab::diff_phasor_vcc.

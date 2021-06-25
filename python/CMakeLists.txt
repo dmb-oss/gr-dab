@@ -62,7 +62,7 @@ GR_PYTHON_INSTALL(
 ########################################################################
 include(GrTest)
 
-set(GR_TEST_TARGET_DEPS gnuradio-dab)
+set(GR_TEST_TARGET_DEPS gnuradio-grdab)
 set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
 GR_ADD_TEST(qa_time_deinterleave_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_time_deinterleave_ff.py)
 GR_ADD_TEST(qa_fib_sink_vb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fib_sink_vb.py)
@@ -79,3 +79,5 @@ GR_ADD_TEST(qa_valve_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_valv
 GR_ADD_TEST(qa_peak_detector_fb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_peak_detector_fb.py)
 
 add_subdirectory(app)
+add_subdirectory(bindings)
+
