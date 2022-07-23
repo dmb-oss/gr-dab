@@ -40,7 +40,7 @@ class qa_valve_ff (gr_unittest.TestCase):
         self.tb.connect(src, valve, dst)
         self.tb.run()
         result_data = dst.data()
-        self.assertEqual(expected_result, result_data)
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data)
 
     def test_002_t (self):
         src_data = (1, 2, 3, 4)
@@ -51,7 +51,7 @@ class qa_valve_ff (gr_unittest.TestCase):
         self.tb.connect(src, valve, dst)
         self.tb.run()
         result_data = dst.data()
-        self.assertEqual(expected_result, result_data)
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data)
 
 
 if __name__ == '__main__':
