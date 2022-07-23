@@ -1,4 +1,10 @@
 table = [
+{'index' : 'K8B' , 'frequency' : '183.008'},
+{'index' : 'K8C' , 'frequency' : '184.736'},
+{'index' : 'K12A' , 'frequency' : '205.280'},
+{'index' : 'K12B' , 'frequency' : '207.008'},
+{'index' : 'K12C' , 'frequency' : '208.736'},
+
 {'index' : '5A' , 'frequency' : '174.928'},
 {'index' : '5B' , 'frequency' : '176.640'},
 {'index' : '5C' , 'frequency' : '178.352'},
