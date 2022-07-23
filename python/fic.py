@@ -23,7 +23,7 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, trellis, blocks
+from gnuradio import gr, trellis, digital, blocks
 import grdab
 from math import sqrt
 
@@ -68,7 +68,7 @@ class fic_decode(gr.hier_block2):
         # self.fsm = trellis.fsm(self.dp.conv_code_in_bits, self.dp.conv_code_out_bits, self.dp.conv_code_generator_polynomials)
         self.fsm = trellis.fsm(1, 4, [0o133, 0o171, 0o145, 0o133])  # OK (dumped to text and verified partially)
         self.conv_v2s = blocks.vector_to_stream(gr.sizeof_float, self.dp.fic_conv_codeword_length)
-        # self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 20, 0, 0, 1, [1./sqrt(2),-1/sqrt(2)] , trellis.TRELLIS_EUCLIDEAN)
+        # self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 20, 0, 0, 1, [1./sqrt(2),-1/sqrt(2)] , digital.TRELLIS_EUCLIDEAN)
         table = [
             0, 0, 0, 0,
             0, 0, 0, 1,
@@ -89,7 +89,7 @@ class fic_decode(gr.hier_block2):
         ]
         assert (len(table) / 4 == self.fsm.O())
         table = [(1 - 2 * x) / sqrt(2) for x in table]
-        self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
+        self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, digital.TRELLIS_EUCLIDEAN)
         #self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, 774)
         self.conv_prune = grdab.prune(gr.sizeof_char, self.dp.fic_conv_codeword_length / 4, 0,
                                             self.dp.conv_code_add_bits_input)

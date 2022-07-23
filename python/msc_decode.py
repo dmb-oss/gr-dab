@@ -19,7 +19,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-from gnuradio import gr, blocks, trellis
+from gnuradio import gr, trellis, digital, blocks
 import grdab
 from math import sqrt
 
@@ -121,7 +121,7 @@ class msc_decode(gr.hier_block2):
         ]
         assert (len(table) / 4 == self.fsm.O())
         table = [(1 - 2 * x) / sqrt(2) for x in table]
-        self.conv_decode = trellis.viterbi_combined_fb(self.fsm, self.msc_I + self.dp.conv_code_add_bits_input, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
+        self.conv_decode = trellis.viterbi_combined_fb(self.fsm, self.msc_I + self.dp.conv_code_add_bits_input, 0, 0, 4, table, digital.TRELLIS_EUCLIDEAN)
         self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I + self.dp.conv_code_add_bits_input)
         self.conv_prune = grdab.prune(gr.sizeof_char, self.msc_conv_codeword_length / 4, 0,
                                             self.dp.conv_code_add_bits_input)
