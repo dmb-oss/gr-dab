@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,10 +30,10 @@ namespace py = pybind11;
 void bind_crc16_bb(py::module& m)
 {
 
-    using crc16_bb    = gr::dab::crc16_bb;
+    using crc16_bb    = ::gr::dab::crc16_bb;
 
 
-    py::class_<crc16_bb,
+    py::class_<crc16_bb, gr::block, gr::basic_block,
         std::shared_ptr<crc16_bb>>(m, "crc16_bb", D(crc16_bb))
 
         .def(py::init(&crc16_bb::make),

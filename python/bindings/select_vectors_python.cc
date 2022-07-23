@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_select_vectors(py::module& m)
 {
 
-    using select_vectors    = gr::dab::select_vectors;
+    using select_vectors    = ::gr::dab::select_vectors;
 
 
-    py::class_<select_vectors,
-        gr::block,
-        gr::basic_block,
+    py::class_<select_vectors, gr::block, gr::basic_block,
         std::shared_ptr<select_vectors>>(m, "select_vectors", D(select_vectors))
 
         .def(py::init(&select_vectors::make),

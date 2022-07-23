@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_mp4_decode_bs(py::module& m)
 {
 
-    using mp4_decode_bs    = gr::dab::mp4_decode_bs;
+    using mp4_decode_bs    = ::gr::dab::mp4_decode_bs;
 
 
-    py::class_<mp4_decode_bs,
-        gr::block,
-        gr::basic_block,
+    py::class_<mp4_decode_bs, gr::block, gr::basic_block,
         std::shared_ptr<mp4_decode_bs>>(m, "mp4_decode_bs", D(mp4_decode_bs))
 
         .def(py::init(&mp4_decode_bs::make),
@@ -45,6 +43,12 @@ void bind_mp4_decode_bs(py::module& m)
         
 
 
+
+
+        
+        .def("get_sample_rate",&mp4_decode_bs::get_sample_rate,       
+            D(mp4_decode_bs,get_sample_rate)
+        )
 
         ;
 

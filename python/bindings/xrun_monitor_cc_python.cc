@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -14,7 +14,7 @@
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
 /* BINDTOOL_HEADER_FILE(xrun_monitor_cc.h)                                        */
-/* BINDTOOL_HEADER_FILE_HASH(1e9d2f4e15a3d1cc5c86a82071cef211)                     */
+/* BINDTOOL_HEADER_FILE_HASH(b12d6174817ae2bcaa79fcaa383bd4f9)                     */
 /***********************************************************************************/
 
 #include <pybind11/complex.h>
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_xrun_monitor_cc(py::module& m)
 {
 
-    using xrun_monitor_cc    = gr::dab::xrun_monitor_cc;
+    using xrun_monitor_cc    = ::gr::dab::xrun_monitor_cc;
 
 
-    py::class_<xrun_monitor_cc,
-        gr::block,
-        gr::basic_block,
+    py::class_<xrun_monitor_cc, gr::block, gr::basic_block,
         std::shared_ptr<xrun_monitor_cc>>(m, "xrun_monitor_cc", D(xrun_monitor_cc))
 
         .def(py::init(&xrun_monitor_cc::make),
@@ -45,6 +43,26 @@ void bind_xrun_monitor_cc(py::module& m)
         
 
 
+
+
+        
+        .def("set_drop_when_full",&xrun_monitor_cc::set_drop_when_full,       
+            py::arg("val"),
+            D(xrun_monitor_cc,set_drop_when_full)
+        )
+
+
+        
+        .def("stop_until_tag",&xrun_monitor_cc::stop_until_tag,       
+            D(xrun_monitor_cc,stop_until_tag)
+        )
+
+
+        
+        .def("set_report_fill",&xrun_monitor_cc::set_report_fill,       
+            py::arg("val"),
+            D(xrun_monitor_cc,set_report_fill)
+        )
 
         ;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,6 +19,15 @@
  static const char *__doc_gr_dab_mp4_decode_bs = R"doc()doc";
 
 
+ static const char *__doc_gr_dab_mp4_decode_bs_mp4_decode_bs_0 = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_mp4_decode_bs_mp4_decode_bs_1 = R"doc()doc";
+
+
  static const char *__doc_gr_dab_mp4_decode_bs_make = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_mp4_decode_bs_get_sample_rate = R"doc()doc";
 
   

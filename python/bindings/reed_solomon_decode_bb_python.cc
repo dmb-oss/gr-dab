@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_reed_solomon_decode_bb(py::module& m)
 {
 
-    using reed_solomon_decode_bb    = gr::dab::reed_solomon_decode_bb;
+    using reed_solomon_decode_bb    = ::gr::dab::reed_solomon_decode_bb;
 
 
-    py::class_<reed_solomon_decode_bb,
-        gr::block,
-        gr::basic_block,
+    py::class_<reed_solomon_decode_bb, gr::block, gr::basic_block,
         std::shared_ptr<reed_solomon_decode_bb>>(m, "reed_solomon_decode_bb", D(reed_solomon_decode_bb))
 
         .def(py::init(&reed_solomon_decode_bb::make),
@@ -45,6 +43,12 @@ void bind_reed_solomon_decode_bb(py::module& m)
         
 
 
+
+
+        
+        .def("get_corrected_errors",&reed_solomon_decode_bb::get_corrected_errors,       
+            D(reed_solomon_decode_bb,get_corrected_errors)
+        )
 
         ;
 

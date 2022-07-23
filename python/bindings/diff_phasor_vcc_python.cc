@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_diff_phasor_vcc(py::module& m)
 {
 
-    using diff_phasor_vcc    = gr::dab::diff_phasor_vcc;
+    using diff_phasor_vcc    = ::gr::dab::diff_phasor_vcc;
 
 
-    py::class_<diff_phasor_vcc,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<diff_phasor_vcc, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<diff_phasor_vcc>>(m, "diff_phasor_vcc", D(diff_phasor_vcc))
 
         .def(py::init(&diff_phasor_vcc::make),

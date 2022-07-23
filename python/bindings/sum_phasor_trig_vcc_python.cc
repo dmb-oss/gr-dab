@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_sum_phasor_trig_vcc(py::module& m)
 {
 
-    using sum_phasor_trig_vcc    = gr::dab::sum_phasor_trig_vcc;
+    using sum_phasor_trig_vcc    = ::gr::dab::sum_phasor_trig_vcc;
 
 
-    py::class_<sum_phasor_trig_vcc,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<sum_phasor_trig_vcc, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<sum_phasor_trig_vcc>>(m, "sum_phasor_trig_vcc", D(sum_phasor_trig_vcc))
 
         .def(py::init(&sum_phasor_trig_vcc::make),

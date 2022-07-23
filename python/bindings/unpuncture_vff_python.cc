@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_unpuncture_vff(py::module& m)
 {
 
-    using unpuncture_vff    = gr::dab::unpuncture_vff;
+    using unpuncture_vff    = ::gr::dab::unpuncture_vff;
 
 
-    py::class_<unpuncture_vff,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<unpuncture_vff, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<unpuncture_vff>>(m, "unpuncture_vff", D(unpuncture_vff))
 
         .def(py::init(&unpuncture_vff::make),

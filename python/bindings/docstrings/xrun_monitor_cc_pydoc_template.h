@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,6 +19,21 @@
  static const char *__doc_gr_dab_xrun_monitor_cc = R"doc()doc";
 
 
+ static const char *__doc_gr_dab_xrun_monitor_cc_xrun_monitor_cc_0 = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_xrun_monitor_cc_xrun_monitor_cc_1 = R"doc()doc";
+
+
  static const char *__doc_gr_dab_xrun_monitor_cc_make = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_xrun_monitor_cc_set_drop_when_full = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_xrun_monitor_cc_stop_until_tag = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_xrun_monitor_cc_set_report_fill = R"doc()doc";
 
   

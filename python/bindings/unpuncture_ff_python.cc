@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_unpuncture_ff(py::module& m)
 {
 
-    using unpuncture_ff    = gr::dab::unpuncture_ff;
+    using unpuncture_ff    = ::gr::dab::unpuncture_ff;
 
 
-    py::class_<unpuncture_ff,
-        gr::block,
-        gr::basic_block,
+    py::class_<unpuncture_ff, gr::block, gr::basic_block,
         std::shared_ptr<unpuncture_ff>>(m, "unpuncture_ff", D(unpuncture_ff))
 
         .def(py::init(&unpuncture_ff::make),

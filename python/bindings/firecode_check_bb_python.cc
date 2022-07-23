@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_firecode_check_bb(py::module& m)
 {
 
-    using firecode_check_bb    = gr::dab::firecode_check_bb;
+    using firecode_check_bb    = ::gr::dab::firecode_check_bb;
 
 
-    py::class_<firecode_check_bb,
-        gr::block,
-        gr::basic_block,
+    py::class_<firecode_check_bb, gr::block, gr::basic_block,
         std::shared_ptr<firecode_check_bb>>(m, "firecode_check_bb", D(firecode_check_bb))
 
         .def(py::init(&firecode_check_bb::make),
@@ -45,6 +43,12 @@ void bind_firecode_check_bb(py::module& m)
         
 
 
+
+
+        
+        .def("get_firecode_passed",&firecode_check_bb::get_firecode_passed,       
+            D(firecode_check_bb,get_firecode_passed)
+        )
 
         ;
 

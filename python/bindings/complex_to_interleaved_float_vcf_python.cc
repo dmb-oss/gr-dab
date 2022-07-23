@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_complex_to_interleaved_float_vcf(py::module& m)
 {
 
-    using complex_to_interleaved_float_vcf    = gr::dab::complex_to_interleaved_float_vcf;
+    using complex_to_interleaved_float_vcf    = ::gr::dab::complex_to_interleaved_float_vcf;
 
 
-    py::class_<complex_to_interleaved_float_vcf,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<complex_to_interleaved_float_vcf, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<complex_to_interleaved_float_vcf>>(m, "complex_to_interleaved_float_vcf", D(complex_to_interleaved_float_vcf))
 
         .def(py::init(&complex_to_interleaved_float_vcf::make),

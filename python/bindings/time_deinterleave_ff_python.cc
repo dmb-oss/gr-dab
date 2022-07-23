@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_time_deinterleave_ff(py::module& m)
 {
 
-    using time_deinterleave_ff    = gr::dab::time_deinterleave_ff;
+    using time_deinterleave_ff    = ::gr::dab::time_deinterleave_ff;
 
 
-    py::class_<time_deinterleave_ff,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<time_deinterleave_ff, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<time_deinterleave_ff>>(m, "time_deinterleave_ff", D(time_deinterleave_ff))
 
         .def(py::init(&time_deinterleave_ff::make),

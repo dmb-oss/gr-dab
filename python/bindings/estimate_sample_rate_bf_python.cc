@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_estimate_sample_rate_bf(py::module& m)
 {
 
-    using estimate_sample_rate_bf    = gr::dab::estimate_sample_rate_bf;
+    using estimate_sample_rate_bf    = ::gr::dab::estimate_sample_rate_bf;
 
 
-    py::class_<estimate_sample_rate_bf,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<estimate_sample_rate_bf, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<estimate_sample_rate_bf>>(m, "estimate_sample_rate_bf", D(estimate_sample_rate_bf))
 
         .def(py::init(&estimate_sample_rate_bf::make),

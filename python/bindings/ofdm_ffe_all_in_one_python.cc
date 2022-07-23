@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_ofdm_ffe_all_in_one(py::module& m)
 {
 
-    using ofdm_ffe_all_in_one    = gr::dab::ofdm_ffe_all_in_one;
+    using ofdm_ffe_all_in_one    = ::gr::dab::ofdm_ffe_all_in_one;
 
 
-    py::class_<ofdm_ffe_all_in_one,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<ofdm_ffe_all_in_one, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<ofdm_ffe_all_in_one>>(m, "ofdm_ffe_all_in_one", D(ofdm_ffe_all_in_one))
 
         .def(py::init(&ofdm_ffe_all_in_one::make),

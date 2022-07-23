@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_repartition_vectors(py::module& m)
 {
 
-    using repartition_vectors    = gr::dab::repartition_vectors;
+    using repartition_vectors    = ::gr::dab::repartition_vectors;
 
 
-    py::class_<repartition_vectors,
-        gr::block,
-        gr::basic_block,
+    py::class_<repartition_vectors, gr::block, gr::basic_block,
         std::shared_ptr<repartition_vectors>>(m, "repartition_vectors", D(repartition_vectors))
 
         .def(py::init(&repartition_vectors::make),

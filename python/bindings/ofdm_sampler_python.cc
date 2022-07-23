@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_ofdm_sampler(py::module& m)
 {
 
-    using ofdm_sampler    = gr::dab::ofdm_sampler;
+    using ofdm_sampler    = ::gr::dab::ofdm_sampler;
 
 
-    py::class_<ofdm_sampler,
-        gr::block,
-        gr::basic_block,
+    py::class_<ofdm_sampler, gr::block, gr::basic_block,
         std::shared_ptr<ofdm_sampler>>(m, "ofdm_sampler", D(ofdm_sampler))
 
         .def(py::init(&ofdm_sampler::make),

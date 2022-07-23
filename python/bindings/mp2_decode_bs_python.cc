@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_mp2_decode_bs(py::module& m)
 {
 
-    using mp2_decode_bs    = gr::dab::mp2_decode_bs;
+    using mp2_decode_bs    = ::gr::dab::mp2_decode_bs;
 
 
-    py::class_<mp2_decode_bs,
-        gr::block,
-        gr::basic_block,
+    py::class_<mp2_decode_bs, gr::block, gr::basic_block,
         std::shared_ptr<mp2_decode_bs>>(m, "mp2_decode_bs", D(mp2_decode_bs))
 
         .def(py::init(&mp2_decode_bs::make),
@@ -45,6 +43,12 @@ void bind_mp2_decode_bs(py::module& m)
         
 
 
+
+
+        
+        .def("get_sample_rate",&mp2_decode_bs::get_sample_rate,       
+            D(mp2_decode_bs,get_sample_rate)
+        )
 
         ;
 

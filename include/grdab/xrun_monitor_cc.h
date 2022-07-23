@@ -50,7 +50,7 @@ namespace gr {
 
       virtual void set_drop_when_full(bool val)=0;
       virtual void stop_until_tag()=0;
-      virtual void set_report_fill(bool)=0;
+      virtual void set_report_fill(bool val)=0;
     };
 
   } // namespace dab

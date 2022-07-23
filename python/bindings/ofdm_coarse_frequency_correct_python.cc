@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_ofdm_coarse_frequency_correct(py::module& m)
 {
 
-    using ofdm_coarse_frequency_correct    = gr::dab::ofdm_coarse_frequency_correct;
+    using ofdm_coarse_frequency_correct    = ::gr::dab::ofdm_coarse_frequency_correct;
 
 
-    py::class_<ofdm_coarse_frequency_correct,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<ofdm_coarse_frequency_correct, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<ofdm_coarse_frequency_correct>>(m, "ofdm_coarse_frequency_correct", D(ofdm_coarse_frequency_correct))
 
         .def(py::init(&ofdm_coarse_frequency_correct::make),

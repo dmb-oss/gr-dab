@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_ofdm_move_and_insert_zero(py::module& m)
 {
 
-    using ofdm_move_and_insert_zero    = gr::dab::ofdm_move_and_insert_zero;
+    using ofdm_move_and_insert_zero    = ::gr::dab::ofdm_move_and_insert_zero;
 
 
-    py::class_<ofdm_move_and_insert_zero,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<ofdm_move_and_insert_zero, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<ofdm_move_and_insert_zero>>(m, "ofdm_move_and_insert_zero", D(ofdm_move_and_insert_zero))
 
         .def(py::init(&ofdm_move_and_insert_zero::make),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,19 +30,25 @@ namespace py = pybind11;
 void bind_moving_sum_ff(py::module& m)
 {
 
-    using moving_sum_ff    = gr::dab::moving_sum_ff;
+    using moving_sum_ff    = ::gr::dab::moving_sum_ff;
 
 
-    py::class_<moving_sum_ff,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<moving_sum_ff, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<moving_sum_ff>>(m, "moving_sum_ff", D(moving_sum_ff))
+
         .def(py::init(&moving_sum_ff::make),
            py::arg("length"),
            D(moving_sum_ff,make)
         )
+        
+
+
+
         ;
+
+
+
+
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,6 +19,15 @@
  static const char *__doc_gr_dab_reed_solomon_decode_bb = R"doc()doc";
 
 
+ static const char *__doc_gr_dab_reed_solomon_decode_bb_reed_solomon_decode_bb_0 = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_reed_solomon_decode_bb_reed_solomon_decode_bb_1 = R"doc()doc";
+
+
  static const char *__doc_gr_dab_reed_solomon_decode_bb_make = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_reed_solomon_decode_bb_get_corrected_errors = R"doc()doc";
 
   

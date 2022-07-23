@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_modulo_ff(py::module& m)
 {
 
-    using modulo_ff    = gr::dab::modulo_ff;
+    using modulo_ff    = ::gr::dab::modulo_ff;
 
 
-    py::class_<modulo_ff,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<modulo_ff, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<modulo_ff>>(m, "modulo_ff", D(modulo_ff))
 
         .def(py::init(&modulo_ff::make),

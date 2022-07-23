@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_control_stream_to_tag_cc(py::module& m)
 {
 
-    using control_stream_to_tag_cc    = gr::dab::control_stream_to_tag_cc;
+    using control_stream_to_tag_cc    = ::gr::dab::control_stream_to_tag_cc;
 
 
-    py::class_<control_stream_to_tag_cc,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<control_stream_to_tag_cc, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<control_stream_to_tag_cc>>(m, "control_stream_to_tag_cc", D(control_stream_to_tag_cc))
 
         .def(py::init(&control_stream_to_tag_cc::make),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,22 +30,34 @@ namespace py = pybind11;
 void bind_valve_ff(py::module& m)
 {
 
-    using valve_ff    = gr::dab::valve_ff;
+    using valve_ff    = ::gr::dab::valve_ff;
 
 
-    py::class_<valve_ff,
-        gr::block,
-        gr::basic_block,
+    py::class_<valve_ff, gr::block, gr::basic_block,
         std::shared_ptr<valve_ff>>(m, "valve_ff", D(valve_ff))
 
         .def(py::init(&valve_ff::make),
            py::arg("closed"),
-           py::arg("feed_with_zeros") =  false,
+           py::arg("feed_with_zeros") = false,
            D(valve_ff,make)
         )
         
 
 
+
+
+        
+        .def("set_closed",&valve_ff::set_closed,       
+            py::arg("closed"),
+            D(valve_ff,set_closed)
+        )
+
+
+        
+        .def("set_feed_with_zeros",&valve_ff::set_feed_with_zeros,       
+            py::arg("feed_with_zeros"),
+            D(valve_ff,set_feed_with_zeros)
+        )
 
         ;
 

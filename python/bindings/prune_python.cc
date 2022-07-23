@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_prune(py::module& m)
 {
 
-    using prune    = gr::dab::prune;
+    using prune    = ::gr::dab::prune;
 
 
-    py::class_<prune,
-        gr::block,
-        gr::basic_block,
+    py::class_<prune, gr::block, gr::basic_block,
         std::shared_ptr<prune>>(m, "prune", D(prune))
 
         .def(py::init(&prune::make),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_ofdm_remove_first_symbol_vcc(py::module& m)
 {
 
-    using ofdm_remove_first_symbol_vcc    = gr::dab::ofdm_remove_first_symbol_vcc;
+    using ofdm_remove_first_symbol_vcc    = ::gr::dab::ofdm_remove_first_symbol_vcc;
 
 
-    py::class_<ofdm_remove_first_symbol_vcc,
-        gr::block,
-        gr::basic_block,
+    py::class_<ofdm_remove_first_symbol_vcc, gr::block, gr::basic_block,
         std::shared_ptr<ofdm_remove_first_symbol_vcc>>(m, "ofdm_remove_first_symbol_vcc", D(ofdm_remove_first_symbol_vcc))
 
         .def(py::init(&ofdm_remove_first_symbol_vcc::make),

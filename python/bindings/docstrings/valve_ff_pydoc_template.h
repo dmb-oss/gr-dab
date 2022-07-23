@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,6 +19,18 @@
  static const char *__doc_gr_dab_valve_ff = R"doc()doc";
 
 
+ static const char *__doc_gr_dab_valve_ff_valve_ff_0 = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_valve_ff_valve_ff_1 = R"doc()doc";
+
+
  static const char *__doc_gr_dab_valve_ff_make = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_valve_ff_set_closed = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_valve_ff_set_feed_with_zeros = R"doc()doc";
 
   

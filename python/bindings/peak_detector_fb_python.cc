@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,25 +30,74 @@ namespace py = pybind11;
 void bind_peak_detector_fb(py::module& m)
 {
 
-    using peak_detector_fb    = gr::dab::peak_detector_fb;
+    using peak_detector_fb    = ::gr::dab::peak_detector_fb;
 
 
-    py::class_<peak_detector_fb,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<peak_detector_fb, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<peak_detector_fb>>(m, "peak_detector_fb", D(peak_detector_fb))
 
         .def(py::init(&peak_detector_fb::make),
-           py::arg("threshold_factor_rise") =  0.25,
-           py::arg("threshold_factor_fall") =  0.40,
-           py::arg("look_ahead") =  10,
-           py::arg("alpha") =  0.001,
+           py::arg("threshold_factor_rise") = 0.25,
+           py::arg("threshold_factor_fall") = 0.40,
+           py::arg("look_ahead") = 10,
+           py::arg("alpha") = 0.001,
            D(peak_detector_fb,make)
         )
         
 
 
+
+
+        
+        .def("set_threshold_factor_rise",&peak_detector_fb::set_threshold_factor_rise,       
+            py::arg("thr"),
+            D(peak_detector_fb,set_threshold_factor_rise)
+        )
+
+
+        
+        .def("set_threshold_factor_fall",&peak_detector_fb::set_threshold_factor_fall,       
+            py::arg("thr"),
+            D(peak_detector_fb,set_threshold_factor_fall)
+        )
+
+
+        
+        .def("set_look_ahead",&peak_detector_fb::set_look_ahead,       
+            py::arg("look"),
+            D(peak_detector_fb,set_look_ahead)
+        )
+
+
+        
+        .def("set_alpha",&peak_detector_fb::set_alpha,       
+            py::arg("alpha"),
+            D(peak_detector_fb,set_alpha)
+        )
+
+
+        
+        .def("threshold_factor_rise",&peak_detector_fb::threshold_factor_rise,       
+            D(peak_detector_fb,threshold_factor_rise)
+        )
+
+
+        
+        .def("threshold_factor_fall",&peak_detector_fb::threshold_factor_fall,       
+            D(peak_detector_fb,threshold_factor_fall)
+        )
+
+
+        
+        .def("look_ahead",&peak_detector_fb::look_ahead,       
+            D(peak_detector_fb,look_ahead)
+        )
+
+
+        
+        .def("alpha",&peak_detector_fb::alpha,       
+            D(peak_detector_fb,alpha)
+        )
 
         ;
 

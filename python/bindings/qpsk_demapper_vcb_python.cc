@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_qpsk_demapper_vcb(py::module& m)
 {
 
-    using qpsk_demapper_vcb    = gr::dab::qpsk_demapper_vcb;
+    using qpsk_demapper_vcb    = ::gr::dab::qpsk_demapper_vcb;
 
 
-    py::class_<qpsk_demapper_vcb,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<qpsk_demapper_vcb, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<qpsk_demapper_vcb>>(m, "qpsk_demapper_vcb", D(qpsk_demapper_vcb))
 
         .def(py::init(&qpsk_demapper_vcb::make),

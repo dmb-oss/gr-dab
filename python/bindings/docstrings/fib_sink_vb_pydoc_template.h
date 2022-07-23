@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,6 +19,33 @@
  static const char *__doc_gr_dab_fib_sink_vb = R"doc()doc";
 
 
+ static const char *__doc_gr_dab_fib_sink_vb_fib_sink_vb_0 = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_fib_sink_vb_1 = R"doc()doc";
+
+
  static const char *__doc_gr_dab_fib_sink_vb_make = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_get_ensemble_info = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_get_service_info = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_get_service_labels = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_get_subch_info = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_get_programme_type = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_get_crc_passed = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_fib_sink_vb_set_print_channel_info = R"doc()doc";
 
   

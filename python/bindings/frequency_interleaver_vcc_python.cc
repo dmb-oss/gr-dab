@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_frequency_interleaver_vcc(py::module& m)
 {
 
-    using frequency_interleaver_vcc    = gr::dab::frequency_interleaver_vcc;
+    using frequency_interleaver_vcc    = ::gr::dab::frequency_interleaver_vcc;
 
 
-    py::class_<frequency_interleaver_vcc,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<frequency_interleaver_vcc, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<frequency_interleaver_vcc>>(m, "frequency_interleaver_vcc", D(frequency_interleaver_vcc))
 
         .def(py::init(&frequency_interleaver_vcc::make),

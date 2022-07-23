@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -17,6 +17,9 @@
 
  
  static const char *__doc_gr_dab_modulo_ff = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_modulo_ff_modulo_ff = R"doc()doc";
 
 
  static const char *__doc_gr_dab_modulo_ff_make = R"doc()doc";

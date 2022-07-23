@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -17,6 +17,9 @@
 
  
  static const char *__doc_gr_dab_ofdm_ffe_all_in_one = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_ofdm_ffe_all_in_one_ofdm_ffe_all_in_one = R"doc()doc";
 
 
  static const char *__doc_gr_dab_ofdm_ffe_all_in_one_make = R"doc()doc";

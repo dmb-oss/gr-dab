@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_ofdm_insert_pilot_vcc(py::module& m)
 {
 
-    using ofdm_insert_pilot_vcc    = gr::dab::ofdm_insert_pilot_vcc;
+    using ofdm_insert_pilot_vcc    = ::gr::dab::ofdm_insert_pilot_vcc;
 
 
-    py::class_<ofdm_insert_pilot_vcc,
-        gr::block,
-        gr::basic_block,
+    py::class_<ofdm_insert_pilot_vcc, gr::block, gr::basic_block,
         std::shared_ptr<ofdm_insert_pilot_vcc>>(m, "ofdm_insert_pilot_vcc", D(ofdm_insert_pilot_vcc))
 
         .def(py::init(&ofdm_insert_pilot_vcc::make),

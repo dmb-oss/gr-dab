@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_measure_processing_rate(py::module& m)
 {
 
-    using measure_processing_rate    = gr::dab::measure_processing_rate;
+    using measure_processing_rate    = ::gr::dab::measure_processing_rate;
 
 
-    py::class_<measure_processing_rate,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<measure_processing_rate, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<measure_processing_rate>>(m, "measure_processing_rate", D(measure_processing_rate))
 
         .def(py::init(&measure_processing_rate::make),

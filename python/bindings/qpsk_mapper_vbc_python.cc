@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_qpsk_mapper_vbc(py::module& m)
 {
 
-    using qpsk_mapper_vbc    = gr::dab::qpsk_mapper_vbc;
+    using qpsk_mapper_vbc    = ::gr::dab::qpsk_mapper_vbc;
 
 
-    py::class_<qpsk_mapper_vbc,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<qpsk_mapper_vbc, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<qpsk_mapper_vbc>>(m, "qpsk_mapper_vbc", D(qpsk_mapper_vbc))
 
         .def(py::init(&qpsk_mapper_vbc::make),

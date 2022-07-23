@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,6 +19,36 @@
  static const char *__doc_gr_dab_peak_detector_fb = R"doc()doc";
 
 
+ static const char *__doc_gr_dab_peak_detector_fb_peak_detector_fb_0 = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_peak_detector_fb_1 = R"doc()doc";
+
+
  static const char *__doc_gr_dab_peak_detector_fb_make = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_set_threshold_factor_rise = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_set_threshold_factor_fall = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_set_look_ahead = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_set_alpha = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_threshold_factor_rise = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_threshold_factor_fall = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_look_ahead = R"doc()doc";
+
+
+ static const char *__doc_gr_dab_peak_detector_fb_alpha = R"doc()doc";
 
   

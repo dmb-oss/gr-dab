@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_insert_null_symbol(py::module& m)
 {
 
-    using insert_null_symbol    = gr::dab::insert_null_symbol;
+    using insert_null_symbol    = ::gr::dab::insert_null_symbol;
 
 
-    py::class_<insert_null_symbol,
-        gr::block,
-        gr::basic_block,
+    py::class_<insert_null_symbol, gr::block, gr::basic_block,
         std::shared_ptr<insert_null_symbol>>(m, "insert_null_symbol", D(insert_null_symbol))
 
         .def(py::init(&insert_null_symbol::make),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_magnitude_equalizer_vcc(py::module& m)
 {
 
-    using magnitude_equalizer_vcc    = gr::dab::magnitude_equalizer_vcc;
+    using magnitude_equalizer_vcc    = ::gr::dab::magnitude_equalizer_vcc;
 
 
-    py::class_<magnitude_equalizer_vcc,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<magnitude_equalizer_vcc, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<magnitude_equalizer_vcc>>(m, "magnitude_equalizer_vcc", D(magnitude_equalizer_vcc))
 
         .def(py::init(&magnitude_equalizer_vcc::make),

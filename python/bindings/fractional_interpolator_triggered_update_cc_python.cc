@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_fractional_interpolator_triggered_update_cc(py::module& m)
 {
 
-    using fractional_interpolator_triggered_update_cc    = gr::dab::fractional_interpolator_triggered_update_cc;
+    using fractional_interpolator_triggered_update_cc    = ::gr::dab::fractional_interpolator_triggered_update_cc;
 
 
-    py::class_<fractional_interpolator_triggered_update_cc,
-        gr::block,
-        gr::basic_block,
+    py::class_<fractional_interpolator_triggered_update_cc, gr::block, gr::basic_block,
         std::shared_ptr<fractional_interpolator_triggered_update_cc>>(m, "fractional_interpolator_triggered_update_cc", D(fractional_interpolator_triggered_update_cc))
 
         .def(py::init(&fractional_interpolator_triggered_update_cc::make),
@@ -46,6 +44,13 @@ void bind_fractional_interpolator_triggered_update_cc(py::module& m)
         
 
 
+
+
+        
+        .def("set_interp_ratio",&fractional_interpolator_triggered_update_cc::set_interp_ratio,       
+            py::arg("interp_ratio"),
+            D(fractional_interpolator_triggered_update_cc,set_interp_ratio)
+        )
 
         ;
 

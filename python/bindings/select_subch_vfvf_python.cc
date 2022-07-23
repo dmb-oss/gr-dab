@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,12 +30,10 @@ namespace py = pybind11;
 void bind_select_subch_vfvf(py::module& m)
 {
 
-    using select_subch_vfvf    = gr::dab::select_subch_vfvf;
+    using select_subch_vfvf    = ::gr::dab::select_subch_vfvf;
 
 
-    py::class_<select_subch_vfvf,
-        gr::block,
-        gr::basic_block,
+    py::class_<select_subch_vfvf, gr::block, gr::basic_block,
         std::shared_ptr<select_subch_vfvf>>(m, "select_subch_vfvf", D(select_subch_vfvf))
 
         .def(py::init(&select_subch_vfvf::make),

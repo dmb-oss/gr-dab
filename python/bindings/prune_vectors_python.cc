@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Free Software Foundation, Inc.
+ * Copyright 2022 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -30,13 +30,10 @@ namespace py = pybind11;
 void bind_prune_vectors(py::module& m)
 {
 
-    using prune_vectors    = gr::dab::prune_vectors;
+    using prune_vectors    = ::gr::dab::prune_vectors;
 
 
-    py::class_<prune_vectors,
-        gr::sync_block,
-        gr::block,
-        gr::basic_block,
+    py::class_<prune_vectors, gr::sync_block, gr::block, gr::basic_block,
         std::shared_ptr<prune_vectors>>(m, "prune_vectors", D(prune_vectors))
 
         .def(py::init(&prune_vectors::make),
