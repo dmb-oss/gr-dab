@@ -44,4 +44,4 @@ class qa_fib_sink_vb (gr_unittest.TestCase):
         pass
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_fib_sink_vb, "qa_fib_sink_vb.xml")
+    gr_unittest.run(qa_fib_sink_vb)

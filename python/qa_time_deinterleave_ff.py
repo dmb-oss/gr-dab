@@ -92,4 +92,4 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
         self.assertEqual(expected_result, result)
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_time_deinterleave_ff, "qa_time_deinterleave_ff.xml")
+    gr_unittest.run(qa_time_deinterleave_ff)

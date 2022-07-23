@@ -53,4 +53,4 @@ class qa_msc_decode (gr_unittest.TestCase):
         pass
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_msc_decode, "qa_msc_decode.xml")
+    gr_unittest.run(qa_msc_decode)

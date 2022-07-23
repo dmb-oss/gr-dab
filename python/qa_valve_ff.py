@@ -55,4 +55,4 @@ class qa_valve_ff (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_valve_ff, "qa_valve_ff.xml")
+    gr_unittest.run(qa_valve_ff)

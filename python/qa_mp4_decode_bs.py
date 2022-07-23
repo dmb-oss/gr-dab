@@ -53,4 +53,4 @@ class qa_mp4_decode_bs (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_mp4_decode_bs, "qa_mp4_decode_bs.xml")
+    gr_unittest.run(qa_mp4_decode_bs)

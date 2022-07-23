@@ -57,4 +57,4 @@ class qa_unpuncture_ff (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_unpuncture_ff, "qa_unpuncture_ff.xml")
+    gr_unittest.run(qa_unpuncture_ff)

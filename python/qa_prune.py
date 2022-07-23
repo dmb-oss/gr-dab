@@ -45,4 +45,4 @@ class qa_prune (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_prune, "qa_prune.xml")
+    gr_unittest.run(qa_prune)

@@ -88,4 +88,4 @@ class qa_select_subch_vfvf (gr_unittest.TestCase):
         self.assertFloatTuplesAlmostEqual2(result_data, expected_data)
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_select_subch_vfvf, "qa_select_subch_vfvf.xml")
+    gr_unittest.run(qa_select_subch_vfvf)
