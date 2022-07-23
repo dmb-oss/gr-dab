@@ -50,7 +50,7 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
                                     # Output signature
                                     gr.io_signature2(2, 2, gr.sizeof_short, gr.sizeof_short))
         self.dp = dab_params
-        self.bit_rate_n = bit_rate / 8
+        self.bit_rate_n = bit_rate // 8
         self.address = address
         self.size = subch_size
         self.protection = protection

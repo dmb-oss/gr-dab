@@ -51,7 +51,7 @@ class msc_decode(gr.hier_block2):
         self.debug = debug
 
         # calculate n factor (multiple of 8kbits etc.)
-        self.n = self.size / self.dp.subch_size_multiple_n[self.protect]
+        self.n = self.size // self.dp.subch_size_multiple_n[self.protect]
 
         # calculate puncturing factors (EEP, table 33, 34)
         self.msc_I = self.n * 192
@@ -65,8 +65,8 @@ class msc_decode(gr.hier_block2):
                 self.puncturing_PI1[self.protect]] + self.puncturing_L2[self.protect] * 4 * \
                                                      self.dp.puncturing_vectors_ones[
                                                          self.puncturing_PI2[self.protect]] + 12
-            self.assembled_msc_puncturing_sequence = int(self.puncturing_L1[self.protect]) * 4 * self.dp.puncturing_vectors[
-                self.puncturing_PI1[self.protect]] + int(self.puncturing_L2[self.protect]) * 4 * self.dp.puncturing_vectors[
+            self.assembled_msc_puncturing_sequence = self.puncturing_L1[self.protect] * 4 * self.dp.puncturing_vectors[
+                self.puncturing_PI1[self.protect]] + self.puncturing_L2[self.protect] * 4 * self.dp.puncturing_vectors[
                 self.puncturing_PI2[self.protect]] + self.dp.puncturing_tail_vector
             self.msc_conv_codeword_length = 4*self.msc_I + 24 # 4*I + 24 ()
         # exception in table
@@ -123,11 +123,11 @@ class msc_decode(gr.hier_block2):
         table = [(1 - 2 * x) / sqrt(2) for x in table]
         self.conv_decode = trellis.viterbi_combined_fb(self.fsm, self.msc_I + self.dp.conv_code_add_bits_input, 0, 0, 4, table, digital.TRELLIS_EUCLIDEAN)
         self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I + self.dp.conv_code_add_bits_input)
-        self.conv_prune = grdab.prune(gr.sizeof_char, self.msc_conv_codeword_length / 4, 0,
+        self.conv_prune = grdab.prune(gr.sizeof_char, self.msc_conv_codeword_length // 4, 0,
                                             self.dp.conv_code_add_bits_input)
 
         #energy descramble
-        self.prbs_src = blocks.vector_source_b(self.dp.prbs(int(self.msc_I)), True)
+        self.prbs_src = blocks.vector_source_b(self.dp.prbs(self.msc_I), True)
         self.energy_v2s = blocks.vector_to_stream(gr.sizeof_char, self.msc_I)
         self.add_mod_2 = blocks.xor_bb()
         #self.energy_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I)
