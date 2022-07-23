@@ -20,7 +20,7 @@
 #
 
 from gnuradio import gr, gr_unittest, blocks
-import grdab_swig as grdab
+import grdab
 
 
 class qa_repartition_vectors(gr_unittest.TestCase):

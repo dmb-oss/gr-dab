@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import grdab_swig as grdab
+import grdab
 
 
 class qa_crc16_bb(gr_unittest.TestCase):

@@ -23,7 +23,7 @@ from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 from gnuradio import audio
 import os
-import grdab_swig as grdab
+import grdab
 
 class qa_mp4_decode_bs (gr_unittest.TestCase):
 
