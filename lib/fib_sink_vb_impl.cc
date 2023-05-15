@@ -50,7 +50,7 @@ namespace gr {
 
     fib_sink_vb_impl::fib_sink_vb_impl()
             : gr::sync_block("fib_sink_vb",
-                             gr::io_signature::make(1, 1, sizeof(char) * 32),
+                             gr::io_signature::make(1, 1, sizeof(char) * FIB_LENGTH),
                              gr::io_signature::make(0, 0, 0))
     {
       d_service_info_written_trigger = -1;
@@ -79,12 +79,14 @@ namespace gr {
       GR_LOG_DEBUG(d_logger, "FIB correct");
       d_crc_passed = true;
       pos = 0;
-      while (pos < FIB_LENGTH - FIB_CRC_LENGTH && (uint8_t) fib[pos] != FIB_ENDMARKER &&
-             (uint8_t) fib[pos] != 0) { //TODO correct?
+      while (pos < FIB_DATA_FIELD_LENGTH && (uint8_t) fib[pos] != FIB_ENDMARKER) {
         type = fib[pos] >> 5;
         length = fib[pos] & 0x1f;
-        assert(pos + length <= FIB_LENGTH - FIB_CRC_LENGTH);
-        assert(length != 0);
+        if (length == 0 || length == 30 || length == 31
+            || pos + length >= FIB_DATA_FIELD_LENGTH) {
+          GR_LOG_DEBUG(d_logger, "FIG length error");
+          break;
+        }
         process_fig(type, &fib[pos], length);
         pos += length + 1;
       }
@@ -97,14 +99,14 @@ namespace gr {
       uint8_t cn, oe, pd, extension;
       switch (type) {
         case FIB_FIG_TYPE_MCI:
-          GR_LOG_DEBUG(d_logger, "FIG type 0");
           extension = (uint8_t)(data[1] & 0x1f);
-          cn = (uint8_t)(data[1] & 0x80);
+          GR_LOG_DEBUG(d_logger, format("FIG %d/%d") % (int)type % (int)extension);
+          cn = (uint8_t)(data[1] & 0x80) >> 7;
           if (cn == 1) GR_LOG_DEBUG(d_logger, "[WARNING, INFO FOR FUTURE CONFIGURATION]: ");
-          oe = (uint8_t)(data[1] & 0x40);
+          oe = (uint8_t)(data[1] & 0x40) >> 6;
           if (cn == 1) GR_LOG_DEBUG(d_logger, "[WARNING, INFO FOR OTHER ENSEMBLE]");
-          pd = (uint8_t)(data[1] & 0x20);
-          if (pd == 1) GR_LOG_DEBUG(d_logger, "[WARNING, LONG IDENTIFIER");
+          pd = (uint8_t)(data[1] & 0x20) >> 5;
+          if (pd == 1) GR_LOG_DEBUG(d_logger, "[WARNING, LONG SERVICE IDENTIFIER]");
 
           switch (extension) {
             case FIB_MCI_EXTENSION_ENSEMBLE_INFO: {
@@ -319,41 +321,43 @@ namespace gr {
               break;
           }
           break;
-        case FIB_FIG_TYPE_LABEL1:
-        case FIB_FIG_TYPE_LABEL2: {
-          GR_LOG_DEBUG(d_logger, "FIG type 2");
+        case FIB_FIG_TYPE_LABEL1: {
+          extension = (uint8_t)(data[1] & 0x07);
+          GR_LOG_DEBUG(d_logger, format("FIG %d/%d") % (int)type % (int)extension);
           char label[17];
           label[16] = '\0';
-          extension = (uint8_t)(data[1] & 0x07);
+          // TODO: FIG length validation, charset, abbreviated label
           switch (extension) {
             case FIB_SI_EXTENSION_ENSEMBLE_LABEL: {
-              uint8_t country_ID = (uint8_t)((data[2] & 0xf0) >> 4);
+              uint16_t eid = ((uint16_t)data[2] << 8) | data[3];
+              // uint8_t country_id = (uint8_t)((eid & 0xf000) >> 12);
+              // uint16_t ensemble_reference = eid & 0x0fff;
               memcpy(label, &data[4], 16);
-              GR_LOG_DEBUG(d_logger, format("[ensemble label](%d): %s") % (int) country_ID % label);
-              // write json for ensemble label and country ID
+              GR_LOG_DEBUG(d_logger, format("[ensemble label] (EId 0x%04x): %s") % (int)eid % label);
+              // write json for ensemble label and ID
               std::stringstream ss;
-              ss << "{" << "\"" << label << "\":{" << "\"country_ID\":" << (int) country_ID << "}}";
+              ss << "{" << "\"" << label << "\":{" << "\"EId\":" << (int)eid << "}}";
               d_json_ensemble_info = ss.str();
               break;
             }
             case FIB_SI_EXTENSION_PROGRAMME_SERVICE_LABEL: {
-              uint16_t service_reference = (uint16_t)(data[2] & 0x0f) << 8 | (uint8_t) data[3];
+              uint16_t sid = ((uint16_t)data[2] << 8) | data[3];
+              // uint16_t service_reference = sid & 0x0fff;
               memcpy(label, &data[4], 16);
               for (int i=0;i<16;i++) {
-                if ((label[i] >= 'A' && label[i] <= 'Z') || (label[i] >= 'a' && label[i] <= 'z') || (label[i] >= '0' && label[i] <= '9') || label[i] == ' ') { }
-                else label[i] = '.'; // Temporarily replacing invalid characters with . to avoid encoding problems in Python FIXME
+                if (label[i] >= 0x20 && label[i] <= 0x7e) { } // ASCII printable characters
+                else label[i] = '`'; // Temporarily replacing invalid characters with ` to avoid encoding problems in Python FIXME
               }
-              GR_LOG_DEBUG(d_logger,
-                           format("[programme service label] (reference %d): %s") % service_reference % label);
+              GR_LOG_DEBUG(d_logger, format("[programme service label] (SId 0x%04x): %s") % (int)sid % label);
               // write service labels from services to json
               if (d_service_labels_written_trigger < 0) {
-                d_service_labels_written_trigger = (int) service_reference;
+                d_service_labels_written_trigger = (int)sid;
               } else {
                 std::stringstream ss;
-                ss << d_service_labels_current << ",{" << "\"label\":\"" << label << "\",\"reference\":"
-                   << (int) service_reference << "}\0";
+                ss << d_service_labels_current << ",{" << "\"label\":\"" << label << "\",\"SId\":"
+                   << (int)sid << "}\0";
                 d_service_labels_current = ss.str();
-                if ((int) service_reference == d_service_labels_written_trigger) {
+                if ((int)sid == d_service_labels_written_trigger) {
                   std::stringstream ss_json;
                   ss_json << d_service_labels_current << "]" << "\0";
                   d_service_labels_current = "\0";
@@ -364,23 +368,42 @@ namespace gr {
               }
               break;
             }
-            case FIB_SI_EXTENSION_SERVICE_COMP_LABEL:
-              memcpy(label, &data[5], 16);
-              GR_LOG_DEBUG(d_logger, format("[service component label] %s") % label);
+            case FIB_SI_EXTENSION_SERVICE_COMP_LABEL: {
+              pd = (uint8_t)(data[2] & 0x80) >> 7;
+              uint8_t scids = (uint8_t)(data[2] & 0x0f);
+              uint32_t sid; // 16 or 32 bits
+              if (pd == 1) { // 32 bits
+                sid = ((uint32_t)data[3] << 24) | ((uint32_t)data[4] << 16) | ((uint32_t)data[5] << 8) | data[6];
+                memcpy(label, &data[7], 16);
+                GR_LOG_DEBUG(d_logger, format("[service component label] (SId 0x%08x, SCIdS %d): %s")
+                             % (int)sid % (int)scids % label);
+              } else { // 16 bits
+                sid = ((uint16_t)data[3] << 8) | data[4];
+                memcpy(label, &data[5], 16);
+                GR_LOG_DEBUG(d_logger, format("[service component label] (SId 0x%04x, SCIdS %d): %s")
+                             % (int)sid % (int)scids % label);
+              }
               break;
-            case FIB_SI_EXTENSION_DATA_SERVICE_LABEL:
-              memcpy(label, &data[5], 16);
-              GR_LOG_DEBUG(d_logger, format("[data service label]: %s") % label);
+            }
+            case FIB_SI_EXTENSION_DATA_SERVICE_LABEL: {
+              uint32_t sid = ((uint32_t)data[2] << 24) | ((uint32_t)data[3] << 16) | ((uint32_t)data[4] << 8) | data[5];
+              memcpy(label, &data[6], 16);
+              GR_LOG_DEBUG(d_logger, format("[data service label] (SId 0x%08x): %s") % (int)sid % label);
               break;
+            }
             default:
               GR_LOG_DEBUG(d_logger, format("[unknown extension (%d)") % (int) extension);
               break;
           }
           break;
         }
-        case FIB_FIG_TYPE_FIDC:
-          GR_LOG_DEBUG(d_logger, "FIG type 5");
+        case FIB_FIG_TYPE_LABEL2:
           extension = (uint8_t)(data[1] & 0x07);
+          GR_LOG_DEBUG(d_logger, format("FIG %d/%d: not supported yet") % (int)type % (int)extension);
+          break;
+        case FIB_FIG_TYPE_FIDC:
+          extension = (uint8_t)(data[1] & 0x07);
+          GR_LOG_DEBUG(d_logger, format("FIG %d/%d") % (int)type % (int)extension);
           switch (extension) {
             case FIB_FIDC_EXTENSION_PAGING:
               GR_LOG_DEBUG(d_logger, "paging - not supported yet");
@@ -396,10 +419,10 @@ namespace gr {
           }
           break;
         case FIB_FIG_TYPE_CA:
-          GR_LOG_DEBUG(d_logger, "FIB type CA (conditional access) not supported yet");
+          GR_LOG_DEBUG(d_logger, "FIG type 6 CA (conditional access): not supported yet");
           break;
         default:
-          GR_LOG_DEBUG(d_logger, "unsupported FIG type");
+          GR_LOG_DEBUG(d_logger, format("FIG type %d: unsupported") % (int)type);
           break;
       }
       return 0;
@@ -414,7 +437,7 @@ namespace gr {
 
       for (int i = 0; i < noutput_items; i++) {
         process_fib(in);
-        in += 32;
+        in += FIB_LENGTH;
       }
 
 
