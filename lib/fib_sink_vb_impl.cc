@@ -50,7 +50,7 @@ namespace gr {
 
     fib_sink_vb_impl::fib_sink_vb_impl()
             : gr::sync_block("fib_sink_vb",
-                             gr::io_signature::make(1, 1, sizeof(char) * FIB_LENGTH),
+                             gr::io_signature::make(1, 1, sizeof(uint8_t) * FIB_LENGTH),
                              gr::io_signature::make(0, 0, 0))
     {
       d_service_info_written_trigger = -1;
@@ -68,10 +68,10 @@ namespace gr {
     }
 
     int
-    fib_sink_vb_impl::process_fib(const char *fib)
+    fib_sink_vb_impl::process_fib(const uint8_t *fib)
     {
       uint8_t type, length, pos;
-      if (crc16(fib, FIB_LENGTH, FIB_CRC_POLY, FIB_CRC_INITSTATE) != 0) {
+      if (crc16((const char *)fib, FIB_LENGTH, FIB_CRC_POLY, FIB_CRC_INITSTATE) != 0) {
         GR_LOG_DEBUG(d_logger, "FIB CRC error");
         d_crc_passed = false;
         return 1;
@@ -79,9 +79,9 @@ namespace gr {
       GR_LOG_DEBUG(d_logger, "FIB correct");
       d_crc_passed = true;
       pos = 0;
-      while (pos < FIB_DATA_FIELD_LENGTH && (uint8_t) fib[pos] != FIB_ENDMARKER) {
-        type = fib[pos] >> 5;
-        length = fib[pos] & 0x1f;
+      while (pos < FIB_DATA_FIELD_LENGTH && fib[pos] != FIB_ENDMARKER) {
+        type = (uint8_t)(fib[pos] & 0xe0) >> 5;
+        length = (uint8_t)(fib[pos] & 0x1f);
         if (length == 0 || length == 30 || length == 31
             || pos + length >= FIB_DATA_FIELD_LENGTH) {
           GR_LOG_DEBUG(d_logger, "FIG length error");
@@ -94,7 +94,7 @@ namespace gr {
     }
 
     int
-    fib_sink_vb_impl::process_fig(uint8_t type, const char *data, uint8_t length)
+    fib_sink_vb_impl::process_fig(uint8_t type, const uint8_t *data, uint8_t length)
     {
       uint8_t cn, oe, pd, extension;
       switch (type) {
@@ -329,9 +329,9 @@ namespace gr {
           // TODO: FIG length validation, charset, abbreviated label
           switch (extension) {
             case FIB_SI_EXTENSION_ENSEMBLE_LABEL: {
-              uint16_t eid = ((uint16_t)data[2] << 8) | data[3];
-              // uint8_t country_id = (uint8_t)((eid & 0xf000) >> 12);
-              // uint16_t ensemble_reference = eid & 0x0fff;
+              uint16_t eid = (uint16_t)data[2] << 8 | (uint16_t)data[3];
+              // uint8_t country_id = (uint16_t)(eid & 0xf000) >> 12;
+              // uint16_t ensemble_reference = (uint16_t)(eid & 0x0fff);
               memcpy(label, &data[4], 16);
               GR_LOG_DEBUG(d_logger, format("[ensemble label] (EId 0x%04x): %s") % (int)eid % label);
               // write json for ensemble label and ID
@@ -341,8 +341,8 @@ namespace gr {
               break;
             }
             case FIB_SI_EXTENSION_PROGRAMME_SERVICE_LABEL: {
-              uint16_t sid = ((uint16_t)data[2] << 8) | data[3];
-              // uint16_t service_reference = sid & 0x0fff;
+              uint16_t sid = (uint16_t)data[2] << 8 | (uint16_t)data[3];
+              // uint16_t service_reference = (uint16_t)(sid & 0x0fff);
               memcpy(label, &data[4], 16);
               for (int i=0;i<16;i++) {
                 if (label[i] >= 0x20 && label[i] <= 0x7e) { } // ASCII printable characters
@@ -373,12 +373,12 @@ namespace gr {
               uint8_t scids = (uint8_t)(data[2] & 0x0f);
               uint32_t sid; // 16 or 32 bits
               if (pd == 1) { // 32 bits
-                sid = ((uint32_t)data[3] << 24) | ((uint32_t)data[4] << 16) | ((uint32_t)data[5] << 8) | data[6];
+                sid = (uint32_t)data[3] << 24 | (uint32_t)data[4] << 16 | (uint32_t)data[5] << 8 | (uint32_t)data[6];
                 memcpy(label, &data[7], 16);
                 GR_LOG_DEBUG(d_logger, format("[service component label] (SId 0x%08x, SCIdS %d): %s")
                              % (int)sid % (int)scids % label);
               } else { // 16 bits
-                sid = ((uint16_t)data[3] << 8) | data[4];
+                sid = (uint16_t)data[3] << 8 | (uint16_t)data[4];
                 memcpy(label, &data[5], 16);
                 GR_LOG_DEBUG(d_logger, format("[service component label] (SId 0x%04x, SCIdS %d): %s")
                              % (int)sid % (int)scids % label);
@@ -386,7 +386,7 @@ namespace gr {
               break;
             }
             case FIB_SI_EXTENSION_DATA_SERVICE_LABEL: {
-              uint32_t sid = ((uint32_t)data[2] << 24) | ((uint32_t)data[3] << 16) | ((uint32_t)data[4] << 8) | data[5];
+              uint32_t sid = (uint32_t)data[2] << 24 | (uint32_t)data[3] << 16 | (uint32_t)data[4] << 8 | (uint32_t)data[5];
               memcpy(label, &data[6], 16);
               GR_LOG_DEBUG(d_logger, format("[data service label] (SId 0x%08x): %s") % (int)sid % label);
               break;
@@ -433,7 +433,7 @@ namespace gr {
                            gr_vector_const_void_star &input_items,
                            gr_vector_void_star &output_items)
     {
-      const char *in = (const char *) input_items[0];
+      const uint8_t *in = (const uint8_t *) input_items[0];
 
       for (int i = 0; i < noutput_items; i++) {
         process_fib(in);
