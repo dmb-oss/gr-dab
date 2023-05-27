@@ -110,6 +110,7 @@ namespace gr {
 
           switch (extension) {
             case FIB_MCI_EXTENSION_ENSEMBLE_INFO: {
+              uint16_t eid = (uint16_t)data[2] << 8 | (uint16_t)data[3];
               uint8_t country_ID = (uint8_t)((data[2] & 0xf0) >> 4);
               uint16_t ensemble_reference = (uint16_t)(data[2] & 0x0f) << 8 | (uint8_t) data[3];
               uint8_t change_flag = (uint8_t)((data[4] & 0xc0) >> 6);
@@ -122,8 +123,7 @@ namespace gr {
               if (alarm_flag == 1) GR_LOG_DEBUG(d_logger, ", [ALARM MESSAGE ACCESSIBLE] ");
               uint16_t CIF_counter = (uint16_t)((data[4] & 0x1f) * 250 + (data[5]));
               GR_LOG_DEBUG(d_logger,
-                           format("ensemble info: reference %d, country ID %d, CIF counter = %d") % ensemble_reference %
-                           (int) country_ID % CIF_counter);
+                           format("ensemble info: EId 0x%04x, CIF counter %d") % eid % CIF_counter);
               break;
             }
             case FIB_MCI_EXTENSION_SUBCHANNEL_ORGA: {
@@ -133,16 +133,16 @@ namespace gr {
                 uint8_t subchID = (uint8_t)((data[2 + subch_counter] & 0xfc) >> 2);
                 uint16_t start_address = (uint16_t)((data[2 + subch_counter] & 0x03) << 8) |
                                          (uint8_t)(data[3 + subch_counter]);
-                uint8_t sl_form = (uint8_t)(data[4] & 0x80);
+                uint8_t sl_form = (uint8_t)(data[4 + subch_counter] & 0x80) >> 7;
                 if (sl_form == 0) {
-                  uint8_t table_switch = (uint8_t)(data[4 + subch_counter] & 0x40);
+                  uint8_t table_switch = (uint8_t)(data[4 + subch_counter] & 0x40) >> 6;
                   if (table_switch != 0) GR_LOG_DEBUG(d_logger, " [WARNING: OTHER TABLE USED] ");
                   uint8_t table_index = (uint8_t)(data[4 + subch_counter] & 0x3f);
                   GR_LOG_DEBUG(d_logger, format("subchID = %d , start address = %d, index %d") % (int) subchID %
                                          (int) start_address % (int) table_index);
                   subch_counter += 3;
                 } else {
-                  uint8_t option = (uint8_t)(data[4 + subch_counter] & 0x70);
+                  uint8_t option = (uint8_t)(data[4 + subch_counter] & 0x70) >> 4;
                   uint8_t protect_level = (uint8_t)((data[4 + subch_counter] & 0x0c) >> 2);
                   uint16_t subch_size = (uint16_t)((data[4 + subch_counter] & 0x03) << 8) |
                                         (uint8_t)(data[5 + subch_counter]);
@@ -168,12 +168,13 @@ namespace gr {
                       d_json_subch_info = ss_json.str();
                       d_json_subch_info[0] = '[';
                       d_subch_info_written_trigger = -1;
-                      int my_conv_table[4] = { 128, 8, 6, 5};
-                      char protect_string[4][3] = {"A1", "A2", "A3", "A4"};
+                      int my_conv_table[2][4] = {{12, 8, 6, 4}, {27, 21, 18, 15}};
+                      char protect_string[2][4][3] = {{"A1", "A2", "A3", "A4"}, {"B1", "B2", "B3", "B4"}};
                       if (d_print_channel_info) {
-                        if (protect_level <= 4) {
-                          int bit_rate = subch_size * 8 / (my_conv_table[protect_level]);
-                          char *protect_level_string = protect_string[protect_level];
+                        if (option < 2 && protect_level < 4) {
+                          int bit_rate = subch_size / (my_conv_table[option][protect_level]);
+                          bit_rate *= (option == 0) ? 8 : (option == 1) ? 32 : 0;
+                          char *protect_level_string = protect_string[option][protect_level];
                           printf("{\"bit_rate\" : \"%d\", \"address\" : \"%d\", \"subch_size\" : \"%d\", \"protect_level\" : \"%s (%d)\"}\n", bit_rate, start_address, subch_size, protect_level_string, protect_level);
                         }
                       }
@@ -184,22 +185,34 @@ namespace gr {
               break;
             }
             case FIB_MCI_EXTENSION_SERVICE_ORGA: {
+              GR_LOG_DEBUG(d_logger, "service orga: ");
               uint8_t service_counter = 1;
               do { //iterate over services
-                uint16_t service_reference = (uint16_t)(data[service_counter + 1] & 0x0f) << 8 |
-                                             (uint8_t) data[service_counter + 2];
-                GR_LOG_DEBUG(d_logger, format("service orga: reference %d ") % service_reference);
-                uint8_t local_flag = (uint8_t)((data[service_counter + 3] & 0x80) >> 7);
+                uint32_t sid; // 16 or 32 bits
+                if (pd == 1) { // 32 bits
+                  sid = (uint32_t)data[service_counter + 1] << 24
+                      | (uint32_t)data[service_counter + 2] << 16
+                      | (uint32_t)data[service_counter + 3] << 8
+                      | (uint32_t)data[service_counter + 4];
+                  GR_LOG_DEBUG(d_logger, format("SId 0x%08x ") % (int)sid);
+                  service_counter += 4;
+                } else { // 16 bits
+                  sid = (uint16_t)data[service_counter + 1] << 8
+                      | (uint16_t)data[service_counter + 2];
+                  GR_LOG_DEBUG(d_logger, format("SId 0x%04x ") % (int)sid);
+                  service_counter += 2;
+                }
+                uint8_t local_flag = (uint8_t)((data[service_counter + 1] & 0x80) >> 7);
                 if (local_flag == 1) GR_LOG_DEBUG(d_logger, "[LOCAL FLAG SET] ");
-                uint8_t ca = (uint8_t)((data[service_counter + 3] & 0x70) >> 4);
+                uint8_t ca = (uint8_t)((data[service_counter + 1] & 0x70) >> 4);
                 if (ca != 0) GR_LOG_DEBUG(d_logger, "[CONDITIONAL ACCESS USED] ");
-                uint8_t num_service_comps = (uint8_t)(data[service_counter + 3] & 0x0f);
+                uint8_t num_service_comps = (uint8_t)(data[service_counter + 1] & 0x0f);
                 GR_LOG_DEBUG(d_logger, format("(%d components):") % (int) num_service_comps);
                 for (int i = 0; i < num_service_comps; i++) { //iterate over service components
-                  uint8_t TMID = (uint8_t)((data[service_counter + 4 + i * 2] & 0xc0) >> 6);
-                  uint8_t comp_type = (uint8_t)(data[service_counter + 4 + i * 2] & 0x3f);
-                  uint8_t subchID = (uint8_t)((data[service_counter + 5 + i * 2] & 0xfc) >> 2);
-                  uint8_t ps = (uint8_t)((data[service_counter + 5 + i * 2 + 1] & 0x02) >> 1);
+                  uint8_t TMID = (uint8_t)((data[service_counter + 2 + i * 2] & 0xc0) >> 6);
+                  uint8_t comp_type = (uint8_t)(data[service_counter + 2 + i * 2] & 0x3f);
+                  uint8_t subchID = (uint8_t)((data[service_counter + 3 + i * 2] & 0xfc) >> 2);
+                  uint8_t ps = (uint8_t)((data[service_counter + 3 + i * 2] & 0x02) >> 1);
                   if (TMID == 0) {
                     GR_LOG_DEBUG(d_logger,
                                  format("(audio stream, type %d, subchID %d, primary %d)") % (int) comp_type %
@@ -209,7 +222,7 @@ namespace gr {
                       d_service_info_written_trigger = (int) subchID;
                     } else {
                       std::stringstream ss;
-                      ss << d_service_info_current << ",{" << "\"reference\":" << (int) service_reference << ",\"ID\":"
+                      ss << d_service_info_current << ",{" << "\"SId\":" << (int) sid << ",\"SubChId\":"
                          << (int) subchID << ",\"primary\":" << ((ps == 1) ? "true" : "false") << ",\"DAB+\":"
                          << (((int) comp_type == 63) ? "true" : "false") << "}\0";
                       d_service_info_current = ss.str();
@@ -231,16 +244,35 @@ namespace gr {
                                  format("(FIDC, type %d, subchID %d, primary %d)") % (int) comp_type % (int) subchID %
                                  (int) ps);
                   } else {
-                    GR_LOG_DEBUG(d_logger, "[packed data]");
+                    GR_LOG_DEBUG(d_logger,
+                                 format("(packed data, SCId %d, primary %d)") % (int) (comp_type << 6 | subchID) % (int) ps);
                   }
                 }
-                service_counter += 3 + 2 * num_service_comps;
+                service_counter += 1 + 2 * num_service_comps;
               } while (service_counter < length);
               break;
             }
-            case FIB_MCI_EXTENSION_SERVICE_ORGA_PACKET_MODE:
-              GR_LOG_DEBUG(d_logger, "service orga packet mode");
+            case FIB_MCI_EXTENSION_SERVICE_ORGA_PACKET_MODE: {
+              GR_LOG_DEBUG(d_logger, "service orga packet mode: ");
+              int cnt = 1;
+              do { // iterate over service components
+                uint16_t scid = (uint16_t)data[cnt + 1] << 4 | (uint16_t)(data[cnt + 2] & 0xf0) >> 4;
+                uint8_t caorg_flag = (uint8_t)(data[cnt + 2] & 0x01);
+                uint8_t dg_flag = (uint8_t)(data[cnt + 3] & 0x80) >> 7;
+                uint8_t dscty = (uint8_t)(data[cnt + 3] & 0x3f);
+                uint8_t subchid = (uint8_t)(data[cnt + 4] & 0xfc) >> 2;
+                uint16_t packet_address = (uint16_t)(data[cnt + 4] & 0x3) << 8 | (uint16_t)data[cnt + 5];
+                cnt += 5;
+                uint16_t caorg;
+                if (caorg_flag == 1) {
+                  caorg = (uint16_t)data[cnt + 1] << 8 | (uint16_t)data[cnt + 2];
+                  cnt += 2;
+                }
+                GR_LOG_DEBUG(d_logger, format("SCId %d, DG flag %d, DSCTy %d, SubChId %d, Packet address %d")
+                             % scid % (int)dg_flag % (int)dscty % (int)subchid % packet_address);
+              } while (cnt < length);
               break;
+            }
             case FIB_MCI_EXTENSION_SERVICE_ORGA_CA:
               GR_LOG_DEBUG(d_logger, "service orga conditional access");
               break;
@@ -248,34 +280,81 @@ namespace gr {
               GR_LOG_DEBUG(d_logger, "service comp language");
               break;
             case FIB_MCI_EXTENSION_SERVICE_COMP_GLOBAL_DEFINITION: {
-              uint8_t service_comp_counter = 0;
-              do {
-                uint16_t service_reference = (uint16_t)(data[service_comp_counter + 2] & 0x0f) << 8 |
-                                             (uint8_t) data[service_comp_counter + 3];
-                uint8_t SCIdS = (uint8_t)(data[service_comp_counter + 4] & 0x0f);
-                if ((data[service_comp_counter + 5] & 0x80) == 0) {
-                  uint8_t subchID = (uint8_t)(data[service_comp_counter + 5] & 0x3f);
-                  GR_LOG_DEBUG(d_logger,
-                               format("service component global definition: reference %d, SCIdS %d, subchID %d") %
-                               service_reference % (int) SCIdS % (int) subchID);
-                  service_comp_counter += 5;
-                } else {
-                  uint16_t subchID = (uint16_t)(data[service_comp_counter + 5] & 0x0f) << 8 |
-                                     (uint8_t) data[service_comp_counter + 6];
-                  GR_LOG_DEBUG(d_logger,
-                               format("service component global definition: reference %d, SCIdS %d, subchID %d") %
-                               service_reference % (int) SCIdS % (int) subchID);
-                  service_comp_counter += 6;
+              GR_LOG_DEBUG(d_logger, "service comp global definition: ");
+              int cnt = 1;
+              do { // iterate over service components
+                uint32_t sid; // 16 or 32 bits
+                if (pd == 1) { // 32 bits
+                  sid = (uint32_t)data[cnt + 1] << 24
+                      | (uint32_t)data[cnt + 2] << 16
+                      | (uint32_t)data[cnt + 3] << 8
+                      | (uint32_t)data[cnt + 4];
+                  GR_LOG_DEBUG(d_logger, format("SId 0x%08x ") % (int)sid);
+                  cnt += 4;
+                } else { // 16 bits
+                  sid = (uint16_t)data[cnt + 1] << 8
+                      | (uint16_t)data[cnt + 2];
+                  GR_LOG_DEBUG(d_logger, format("SId 0x%04x ") % (int)sid);
+                  cnt += 2;
                 }
-              } while (1 + service_comp_counter < length);
+                uint8_t extension_flag = (uint8_t)(data[cnt + 1] & 0x80) >> 7;
+                uint8_t scids = (uint8_t)(data[cnt + 1] & 0x0f);
+                uint8_t ls_flag = (uint8_t)(data[cnt + 2] & 0x80) >> 7;
+                if (ls_flag == 0) {
+                  uint8_t subchid = (uint8_t)(data[cnt + 2] & 0x3f);
+                  GR_LOG_DEBUG(d_logger, format("SCIdS %d, SubChId %d") % (int)scids % (int)subchid);
+                  cnt += 2;
+                } else {
+                  uint16_t scid = (uint16_t)(data[cnt + 2] & 0x0f) << 8 | (uint16_t)data[cnt + 3];
+                  GR_LOG_DEBUG(d_logger, format("SCIdS %d, SCId %d") % (int)scids % (int)scid);
+                  cnt += 3;
+                }
+                if (extension_flag == 1) {
+                  cnt += 1;
+                }
+              } while (cnt < length);
               break;
             }
             case FIB_SI_EXTENSION_COUNTRY_LTO:
               GR_LOG_DEBUG(d_logger, "country LTO");
               break;
-            case FIB_SI_EXTENSION_USER_APPLICATION_INFO:
-              GR_LOG_DEBUG(d_logger, "user application info");
+            case FIB_SI_EXTENSION_TIME_AND_COUNTRYID:
+              GR_LOG_DEBUG(d_logger, "date time");
               break;
+            case FIB_SI_EXTENSION_USER_APPLICATION_INFO: {
+              GR_LOG_DEBUG(d_logger, "user application info: ");
+              int cnt = 1;
+              do { // iterate over service components
+                uint32_t sid; // 16 or 32 bits
+                if (pd == 1) { // 32 bits
+                  sid = (uint32_t)data[cnt + 1] << 24
+                      | (uint32_t)data[cnt + 2] << 16
+                      | (uint32_t)data[cnt + 3] << 8
+                      | (uint32_t)data[cnt + 4];
+                  GR_LOG_DEBUG(d_logger, format("SId 0x%08x ") % (int)sid);
+                  cnt += 4;
+                } else { // 16 bits
+                  sid = (uint16_t)data[cnt + 1] << 8
+                      | (uint16_t)data[cnt + 2];
+                  GR_LOG_DEBUG(d_logger, format("SId 0x%04x ") % (int)sid);
+                  cnt += 2;
+                }
+                uint8_t scids = (uint8_t)(data[cnt + 1] & 0xf0) >> 4;
+                uint8_t num_user_apps = (uint8_t)(data[cnt + 1] & 0x0f);
+                GR_LOG_DEBUG(d_logger, format("SCIdS %d ") % (int)scids);
+                cnt += 1;
+                for (int i = 0; i < num_user_apps; i++) { // iterate over user apps
+                  uint16_t user_app_type = (uint16_t)data[cnt + 1] << 3 | (uint16_t)(data[cnt + 2] & 0xe0) >> 5;
+                  uint8_t user_app_data_len = (uint8_t)(data[cnt + 2] & 0x1f);
+                  GR_LOG_DEBUG(d_logger, format("User App Type 0x%03x, data: ") % user_app_type);
+                  for (int j = 0; j < user_app_data_len; j++) {
+                    GR_LOG_DEBUG(d_logger, format("%02x ") % (int)data[cnt + 3 + j]);
+                  }
+                  cnt += 2 + user_app_data_len;
+                }
+              } while (cnt < length);
+              break;
+            }
             case FIB_MCI_EXTENSION_SUBCHANNEL_PACKET_MODE_FEC:
               GR_LOG_DEBUG(d_logger, "subchannel orga packet mode fec");
               break;
