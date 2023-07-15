@@ -68,7 +68,9 @@ list(APPEND dab_sources
     valve_ff_impl.cc
     peak_detector_fb_impl.cc
     control_stream_to_tag_cc_impl.cc
-    xrun_monitor_cc_impl.cc )
+    xrun_monitor_cc_impl.cc
+    ts_packet_align_impl.cc
+)
 
 set(dab_sources "${dab_sources}" PARENT_SCOPE)
 if(NOT dab_sources)

@@ -67,7 +67,8 @@ list(APPEND dab_python_files
     unpuncture_ff_python.cc
     unpuncture_vff_python.cc
     valve_ff_python.cc
-    xrun_monitor_cc_python.cc    
+    xrun_monitor_cc_python.cc
+    ts_packet_align_python.cc
     )
 
 GR_PYBIND_MAKE_OOT(grdab 

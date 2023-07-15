@@ -59,6 +59,7 @@ void bind_unpuncture_ff(py::module& m);
 void bind_unpuncture_vff(py::module& m);
 void bind_valve_ff(py::module& m);
 void bind_xrun_monitor_cc(py::module& m);
+void bind_ts_packet_align(py::module& m);
 // ) END BINDING_FUNCTION_PROTOTYPES
 
 
@@ -125,5 +126,6 @@ PYBIND11_MODULE(grdab_python, m)
     bind_unpuncture_vff(m);
     bind_valve_ff(m);
     bind_xrun_monitor_cc(m);
+    bind_ts_packet_align(m);
     // ) END BINDING_FUNCTION_CALLS
 }

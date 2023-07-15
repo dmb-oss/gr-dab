@@ -65,5 +65,7 @@ install(FILES
     dab_peak_detector_fb.block.yml
     dab_xrun_monitor.block.yml
     dab_osmo_or_zmq_source.block.yml
-    dab_control_stream_to_tag_cc.block.yml DESTINATION share/gnuradio/grc/blocks
+    dab_control_stream_to_tag_cc.block.yml
+    dab_ts_packet_align.block.yml
+    DESTINATION share/gnuradio/grc/blocks
 )

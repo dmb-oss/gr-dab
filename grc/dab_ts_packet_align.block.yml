@@ -1,0 +1,26 @@
+id: dab_ts_packet_align
+label: TS Packet Boundary Align
+category: '[DAB]'
+
+parameters:
+- id: npacks
+  label: Number of packets (204 bytes)
+  dtype: int
+  default: '8'
+
+inputs:
+- domain: stream
+  dtype: byte
+
+outputs:
+- domain: stream
+  dtype: byte
+
+asserts:
+- ${ npacks > 0 }
+
+templates:
+  imports: import grdab
+  make: grdab.ts_packet_align(${npacks})
+
+file_format: 1

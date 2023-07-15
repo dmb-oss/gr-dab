@@ -60,5 +60,7 @@ install(FILES
     valve_ff.h
     peak_detector_fb.h
     xrun_monitor_cc.h
-    control_stream_to_tag_cc.h DESTINATION include/grdab
+    control_stream_to_tag_cc.h
+    ts_packet_align.h
+    DESTINATION include/grdab
 )
