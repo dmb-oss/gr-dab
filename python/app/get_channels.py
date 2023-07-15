@@ -129,10 +129,10 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
             print("Channels:")
             for c,item in channels.items():
                 if 'subch_info' in item:
-                    conv_table = [ 128, 8, 6, 5];
+                    conv_table = [12, 8, 6, 4, 27/4, 21/4, 18/4, 15/4]
                     protect_level = item['subch_info']['protection']
                     subch_size = item['subch_info']['size']
-                    if protect_level <= 4:
+                    if protect_level <= 8:
                         if 'label' in item:
                             label = item['label']
                         else:

@@ -50,16 +50,19 @@ class msc_decode(gr.hier_block2):
         self.verbose = verbose
         self.debug = debug
 
-        # calculate n factor (multiple of 8kbits etc.)
+        # calculate n factor (multiple of 8kbits or 32kbits etc.)
         self.n = self.size // self.dp.subch_size_multiple_n[self.protect]
+        if self.protect >= 4: # protection profile set B
+            self.n *= 4
 
         # calculate puncturing factors (EEP, table 33, 34)
         self.msc_I = self.n * 192
         if (self.n > 1 or self.protect != 1):
-            self.puncturing_L1 = [6 * self.n - 3, 2 * self.n - 3, 6 * self.n - 3, 4 * self.n - 3]
-            self.puncturing_L2 = [3, 4 * self.n + 3, 3, 2 * self.n + 3]
-            self.puncturing_PI1 = [24, 14, 8, 3]
-            self.puncturing_PI2 = [23, 13, 7, 2]
+            self.puncturing_L1 = [6 * self.n - 3, 2 * self.n - 3, 6 * self.n - 3, 4 * self.n - 3, \
+                                  6 * self.n - 3, 6 * self.n - 3, 6 * self.n - 3, 6 * self.n - 3]
+            self.puncturing_L2 = [3, 4 * self.n + 3, 3, 2 * self.n + 3, 3, 3, 3, 3]
+            self.puncturing_PI1 = [24, 14, 8, 3, 10, 6, 4, 2]
+            self.puncturing_PI2 = [23, 13, 7, 2,  9, 5, 3, 1]
             # calculate length of punctured codeword (11.3.2)
             self.msc_punctured_codeword_length = self.puncturing_L1[self.protect] * 4 * self.dp.puncturing_vectors_ones[
                 self.puncturing_PI1[self.protect]] + self.puncturing_L2[self.protect] * 4 * \
