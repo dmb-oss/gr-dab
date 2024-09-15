@@ -311,7 +311,7 @@ namespace gr {
                                           int scalefactor, int *sample)
     {
       int idx, adj, scale;
-      register int val;
+      int val;
 
       if (!q) {
         // no bits allocated for this subband
@@ -440,7 +440,7 @@ namespace gr {
 // compute the frame size
       frame_size = (144000 * bitrates[bit_rate_index_minus1]
                     / sample_rates[sampling_frequency]) + padding_bit;
-      GR_LOG_DEBUG(d_logger, format("frame_size = %d") % frame_size);
+      GR_LOG_DEBUG(d_logger, (format("frame_size = %d") % frame_size).str());
 
       if (!pcm) {
         GR_LOG_ERROR(d_logger, "pcm is NULL ptr - no decoding");

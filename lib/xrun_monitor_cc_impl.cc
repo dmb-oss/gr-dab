@@ -271,7 +271,7 @@ namespace gr {
         if (d_n > 10000) {
             //printf("ninput_items: %d, noutput_items: %d\n", ninput_items[0], noutput_items);
             if (d_report_fill)
-                printf("Fill: %f %\n", (((float)current_fill)/((float)d_length))*100);
+                printf("Fill: %f %%\n", (((float)current_fill)/((float)d_length))*100);
             d_n = 0;
         }
 

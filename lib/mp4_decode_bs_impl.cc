@@ -215,11 +215,11 @@ namespace gr {
         baudRate = sample_rate;
       }
       d_sample_rate = sample_rate;
-      //GR_LOG_DEBUG(d_logger, format("bytes consumed %d") % (int) (hInfo.bytesconsumed));
+      //GR_LOG_DEBUG(d_logger, (format("bytes consumed %d") % (int) (hInfo.bytesconsumed)).str());
       //GR_LOG_DEBUG(d_logger,
-      //             format("sample_rate = %d, samples = %d, channels = %d, error = %d, sbr = %d") % sample_rate %
+      //             (format("sample_rate = %d, samples = %d, channels = %d, error = %d, sbr = %d") % sample_rate %
       //             samples %
-      //             (int) (hInfo.channels) % (int) (hInfo.error) % (int) (hInfo.sbr));
+      //             (int) (hInfo.channels) % (int) (hInfo.error) % (int) (hInfo.sbr)).str());
       channels = hInfo.channels;
       if (hInfo.error != 0) {
         fprintf(stderr, "Warning: %s\n",
@@ -245,7 +245,7 @@ namespace gr {
       } else
         GR_LOG_ERROR(d_logger, "Cannot handle these channels -> dump samples");
 
-      //GR_LOG_DEBUG(d_logger, format("Produced %d PCM samples (for each channel)") % (samples / 2));
+      //GR_LOG_DEBUG(d_logger, (format("Produced %d PCM samples (for each channel)") % (samples / 2)).str());
       d_nsamples_produced += samples / 2;
       return samples / 2;
     }
@@ -315,9 +315,9 @@ namespace gr {
         d_mpeg_surround = (in[n * d_superframe_size + 2] & 07); // bits 21 .. 23
         // log header information
         //GR_LOG_DEBUG(d_logger,
-        //             format("superframe header: dac_rate %d, sbr_flag %d, aac_mode %d, ps_flag %d, surround %d") %
+        //             (format("superframe header: dac_rate %d, sbr_flag %d, aac_mode %d, ps_flag %d, surround %d") %
         //             (int) d_dac_rate % (int) d_sbr_flag % (int) d_aac_channel_mode % (int) d_ps_flag %
-        //             (int) d_mpeg_surround);
+        //             (int) d_mpeg_surround).str());
 
         switch (2 * d_dac_rate + d_sbr_flag) {
           default:    // cannot happen
@@ -376,7 +376,7 @@ namespace gr {
 
           // CRC check of each AU (the 2 byte (16 bit) CRC word is excluded in aac_frame_length)
           if (crc16(&in[n * d_superframe_size + d_au_start[i]], aac_frame_length)) {
-            //GR_LOG_DEBUG(d_logger, format("CRC check of AU %d successful") % i);
+            //GR_LOG_DEBUG(d_logger, (format("CRC check of AU %d successful") % i).str());
             // handle proper AU
             handle_aac_frame(&in[n * d_superframe_size + d_au_start[i]],
                              aac_frame_length,
@@ -388,7 +388,7 @@ namespace gr {
                              out2);
           } else {
             // dump corrupted AU
-            GR_LOG_DEBUG(d_logger, format("CRC failure with dab+ frame"));
+            GR_LOG_DEBUG(d_logger, (format("CRC failure with dab+ frame")).str());
           }
         }
         frames ++;

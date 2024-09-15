@@ -100,7 +100,7 @@ namespace gr {
       switch (type) {
         case FIB_FIG_TYPE_MCI:
           extension = (uint8_t)(data[1] & 0x1f);
-          GR_LOG_DEBUG(d_logger, format("FIG %d/%d") % (int)type % (int)extension);
+          GR_LOG_DEBUG(d_logger, (format("FIG %d/%d") % (int)type % (int)extension).str());
           cn = (uint8_t)(data[1] & 0x80) >> 7;
           if (cn == 1) GR_LOG_DEBUG(d_logger, "[WARNING, INFO FOR FUTURE CONFIGURATION]: ");
           oe = (uint8_t)(data[1] & 0x40) >> 6;
@@ -117,13 +117,13 @@ namespace gr {
               uint8_t occurrence_change = data[6];
               if (change_flag != 0)
                 GR_LOG_DEBUG(d_logger,
-                             format(", [CHANGE OF SUBCHANNEL OR SERVICE ORGA (%d)](at CIF %d) ") % (int) change_flag %
-                             (int) occurrence_change);
+                             (format(", [CHANGE OF SUBCHANNEL OR SERVICE ORGA (%d)](at CIF %d) ") % (int) change_flag %
+                             (int) occurrence_change).str());
               uint8_t alarm_flag = (uint8_t)((data[4] & 0x20) >> 5);
               if (alarm_flag == 1) GR_LOG_DEBUG(d_logger, ", [ALARM MESSAGE ACCESSIBLE] ");
               uint16_t CIF_counter = (uint16_t)((data[4] & 0x1f) * 250 + (data[5]));
               GR_LOG_DEBUG(d_logger,
-                           format("ensemble info: EId 0x%04x, CIF counter %d") % eid % CIF_counter);
+                           (format("ensemble info: EId 0x%04x, CIF counter %d") % eid % CIF_counter).str());
               break;
             }
             case FIB_MCI_EXTENSION_SUBCHANNEL_ORGA: {
@@ -138,8 +138,8 @@ namespace gr {
                   uint8_t table_switch = (uint8_t)(data[4 + subch_counter] & 0x40) >> 6;
                   if (table_switch != 0) GR_LOG_DEBUG(d_logger, " [WARNING: OTHER TABLE USED] ");
                   uint8_t table_index = (uint8_t)(data[4 + subch_counter] & 0x3f);
-                  GR_LOG_DEBUG(d_logger, format("subchID = %d , start address = %d, index %d") % (int) subchID %
-                                         (int) start_address % (int) table_index);
+                  GR_LOG_DEBUG(d_logger, (format("subchID = %d , start address = %d, index %d") % (int) subchID %
+                                         (int) start_address % (int) table_index).str());
                   subch_counter += 3;
                 } else {
                   uint8_t option = (uint8_t)(data[4 + subch_counter] & 0x70) >> 4;
@@ -147,9 +147,9 @@ namespace gr {
                   uint16_t subch_size = (uint16_t)((data[4 + subch_counter] & 0x03) << 8) |
                                         (uint8_t)(data[5 + subch_counter]);
                   GR_LOG_DEBUG(d_logger,
-                               format("subchID = %d , start address = %d, option %d, protect level %d, subch size %d") %
+                               (format("subchID = %d , start address = %d, option %d, protect level %d, subch size %d") %
                                (int) subchID % (int) start_address % (int) option % (int) protect_level %
-                               (int) subch_size);
+                               (int) subch_size).str());
                   subch_counter += 4;
 
                   // write sub-channel info to json
@@ -194,12 +194,12 @@ namespace gr {
                       | (uint32_t)data[service_counter + 2] << 16
                       | (uint32_t)data[service_counter + 3] << 8
                       | (uint32_t)data[service_counter + 4];
-                  GR_LOG_DEBUG(d_logger, format("SId 0x%08x ") % (int)sid);
+                  GR_LOG_DEBUG(d_logger, (format("SId 0x%08x ") % (int)sid).str());
                   service_counter += 4;
                 } else { // 16 bits
                   sid = (uint16_t)data[service_counter + 1] << 8
                       | (uint16_t)data[service_counter + 2];
-                  GR_LOG_DEBUG(d_logger, format("SId 0x%04x ") % (int)sid);
+                  GR_LOG_DEBUG(d_logger, (format("SId 0x%04x ") % (int)sid).str());
                   service_counter += 2;
                 }
                 uint8_t local_flag = (uint8_t)((data[service_counter + 1] & 0x80) >> 7);
@@ -207,7 +207,7 @@ namespace gr {
                 uint8_t ca = (uint8_t)((data[service_counter + 1] & 0x70) >> 4);
                 if (ca != 0) GR_LOG_DEBUG(d_logger, "[CONDITIONAL ACCESS USED] ");
                 uint8_t num_service_comps = (uint8_t)(data[service_counter + 1] & 0x0f);
-                GR_LOG_DEBUG(d_logger, format("(%d components):") % (int) num_service_comps);
+                GR_LOG_DEBUG(d_logger, (format("(%d components):") % (int) num_service_comps).str());
                 for (int i = 0; i < num_service_comps; i++) { //iterate over service components
                   uint8_t TMID = (uint8_t)((data[service_counter + 2 + i * 2] & 0xc0) >> 6);
                   uint8_t comp_type = (uint8_t)(data[service_counter + 2 + i * 2] & 0x3f);
@@ -215,8 +215,8 @@ namespace gr {
                   uint8_t ps = (uint8_t)((data[service_counter + 3 + i * 2] & 0x02) >> 1);
                   if (TMID == 0) {
                     GR_LOG_DEBUG(d_logger,
-                                 format("(audio stream, type %d, subchID %d, primary %d)") % (int) comp_type %
-                                 (int) subchID % (int) ps);
+                                 (format("(audio stream, type %d, subchID %d, primary %d)") % (int) comp_type %
+                                 (int) subchID % (int) ps).str());
                     // write service info from specififc subchannel to json
                     if (d_service_info_written_trigger < 0) {
                       d_service_info_written_trigger = (int) subchID;
@@ -237,15 +237,15 @@ namespace gr {
                     }
                   } else if (TMID == 1) {
                     GR_LOG_DEBUG(d_logger,
-                                 format("(data stream, type %d, subchID %d, primary %d)") % (int) comp_type %
-                                 (int) subchID % (int) ps);
+                                 (format("(data stream, type %d, subchID %d, primary %d)") % (int) comp_type %
+                                 (int) subchID % (int) ps).str());
                   } else if (TMID == 2) {
                     GR_LOG_DEBUG(d_logger,
-                                 format("(FIDC, type %d, subchID %d, primary %d)") % (int) comp_type % (int) subchID %
-                                 (int) ps);
+                                 (format("(FIDC, type %d, subchID %d, primary %d)") % (int) comp_type % (int) subchID %
+                                 (int) ps).str());
                   } else {
                     GR_LOG_DEBUG(d_logger,
-                                 format("(packed data, SCId %d, primary %d)") % (int) (comp_type << 6 | subchID) % (int) ps);
+                                 (format("(packed data, SCId %d, primary %d)") % (int) (comp_type << 6 | subchID) % (int) ps).str());
                   }
                 }
                 service_counter += 1 + 2 * num_service_comps;
@@ -268,8 +268,8 @@ namespace gr {
                   caorg = (uint16_t)data[cnt + 1] << 8 | (uint16_t)data[cnt + 2];
                   cnt += 2;
                 }
-                GR_LOG_DEBUG(d_logger, format("SCId %d, DG flag %d, DSCTy %d, SubChId %d, Packet address %d")
-                             % scid % (int)dg_flag % (int)dscty % (int)subchid % packet_address);
+                GR_LOG_DEBUG(d_logger, (format("SCId %d, DG flag %d, DSCTy %d, SubChId %d, Packet address %d")
+                             % scid % (int)dg_flag % (int)dscty % (int)subchid % packet_address).str());
               } while (cnt < length);
               break;
             }
@@ -289,12 +289,12 @@ namespace gr {
                       | (uint32_t)data[cnt + 2] << 16
                       | (uint32_t)data[cnt + 3] << 8
                       | (uint32_t)data[cnt + 4];
-                  GR_LOG_DEBUG(d_logger, format("SId 0x%08x ") % (int)sid);
+                  GR_LOG_DEBUG(d_logger, (format("SId 0x%08x ") % (int)sid).str());
                   cnt += 4;
                 } else { // 16 bits
                   sid = (uint16_t)data[cnt + 1] << 8
                       | (uint16_t)data[cnt + 2];
-                  GR_LOG_DEBUG(d_logger, format("SId 0x%04x ") % (int)sid);
+                  GR_LOG_DEBUG(d_logger, (format("SId 0x%04x ") % (int)sid).str());
                   cnt += 2;
                 }
                 uint8_t extension_flag = (uint8_t)(data[cnt + 1] & 0x80) >> 7;
@@ -302,11 +302,11 @@ namespace gr {
                 uint8_t ls_flag = (uint8_t)(data[cnt + 2] & 0x80) >> 7;
                 if (ls_flag == 0) {
                   uint8_t subchid = (uint8_t)(data[cnt + 2] & 0x3f);
-                  GR_LOG_DEBUG(d_logger, format("SCIdS %d, SubChId %d") % (int)scids % (int)subchid);
+                  GR_LOG_DEBUG(d_logger, (format("SCIdS %d, SubChId %d") % (int)scids % (int)subchid).str());
                   cnt += 2;
                 } else {
                   uint16_t scid = (uint16_t)(data[cnt + 2] & 0x0f) << 8 | (uint16_t)data[cnt + 3];
-                  GR_LOG_DEBUG(d_logger, format("SCIdS %d, SCId %d") % (int)scids % (int)scid);
+                  GR_LOG_DEBUG(d_logger, (format("SCIdS %d, SCId %d") % (int)scids % (int)scid).str());
                   cnt += 3;
                 }
                 if (extension_flag == 1) {
@@ -331,24 +331,24 @@ namespace gr {
                       | (uint32_t)data[cnt + 2] << 16
                       | (uint32_t)data[cnt + 3] << 8
                       | (uint32_t)data[cnt + 4];
-                  GR_LOG_DEBUG(d_logger, format("SId 0x%08x ") % (int)sid);
+                  GR_LOG_DEBUG(d_logger, (format("SId 0x%08x ") % (int)sid).str());
                   cnt += 4;
                 } else { // 16 bits
                   sid = (uint16_t)data[cnt + 1] << 8
                       | (uint16_t)data[cnt + 2];
-                  GR_LOG_DEBUG(d_logger, format("SId 0x%04x ") % (int)sid);
+                  GR_LOG_DEBUG(d_logger, (format("SId 0x%04x ") % (int)sid).str());
                   cnt += 2;
                 }
                 uint8_t scids = (uint8_t)(data[cnt + 1] & 0xf0) >> 4;
                 uint8_t num_user_apps = (uint8_t)(data[cnt + 1] & 0x0f);
-                GR_LOG_DEBUG(d_logger, format("SCIdS %d ") % (int)scids);
+                GR_LOG_DEBUG(d_logger, (format("SCIdS %d ") % (int)scids).str());
                 cnt += 1;
                 for (int i = 0; i < num_user_apps; i++) { // iterate over user apps
                   uint16_t user_app_type = (uint16_t)data[cnt + 1] << 3 | (uint16_t)(data[cnt + 2] & 0xe0) >> 5;
                   uint8_t user_app_data_len = (uint8_t)(data[cnt + 2] & 0x1f);
-                  GR_LOG_DEBUG(d_logger, format("User App Type 0x%03x, data: ") % user_app_type);
+                  GR_LOG_DEBUG(d_logger, (format("User App Type 0x%03x, data: ") % user_app_type).str());
                   for (int j = 0; j < user_app_data_len; j++) {
-                    GR_LOG_DEBUG(d_logger, format("%02x ") % (int)data[cnt + 3 + j]);
+                    GR_LOG_DEBUG(d_logger, (format("%02x ") % (int)data[cnt + 3 + j]).str());
                   }
                   cnt += 2 + user_app_data_len;
                 }
@@ -362,12 +362,12 @@ namespace gr {
               GR_LOG_DEBUG(d_logger, "programme number");
               break;
             case FIB_SI_EXTENSION_PROGRAMME_TYPE: {
-              GR_LOG_DEBUG(d_logger, format("programme type, %d components") %((length-1)/4));
+              GR_LOG_DEBUG(d_logger, (format("programme type, %d components") %((length-1)/4)).str());
               for(int i = 0; i < (length-1)/4; i++) {
                 uint8_t programme_type = (uint8_t)(data[2 + i*4 + 3] & 0x1f);
                 uint16_t service_reference = (uint16_t)(data[2 + i*4] & 0x0f) << 8 |
                                              (uint8_t) data[2 + i*4 + 1];
-                GR_LOG_DEBUG(d_logger, format("reference %d, type: %d") %service_reference %(int)programme_type);
+                GR_LOG_DEBUG(d_logger, (format("reference %d, type: %d") %service_reference %(int)programme_type).str());
 
                 // write programme type to json
                 if (d_programme_type_written_trigger < 0) {
@@ -396,13 +396,13 @@ namespace gr {
               GR_LOG_DEBUG(d_logger, "announcement switching");
               break;
             default:
-              GR_LOG_DEBUG(d_logger, format("unsupported extension (%d)") % (int) extension);
+              GR_LOG_DEBUG(d_logger, (format("unsupported extension (%d)") % (int) extension).str());
               break;
           }
           break;
         case FIB_FIG_TYPE_LABEL1: {
           extension = (uint8_t)(data[1] & 0x07);
-          GR_LOG_DEBUG(d_logger, format("FIG %d/%d") % (int)type % (int)extension);
+          GR_LOG_DEBUG(d_logger, (format("FIG %d/%d") % (int)type % (int)extension).str());
           char label[17];
           label[16] = '\0';
           // TODO: FIG length validation, charset, abbreviated label
@@ -412,7 +412,7 @@ namespace gr {
               // uint8_t country_id = (uint16_t)(eid & 0xf000) >> 12;
               // uint16_t ensemble_reference = (uint16_t)(eid & 0x0fff);
               memcpy(label, &data[4], 16);
-              GR_LOG_DEBUG(d_logger, format("[ensemble label] (EId 0x%04x): %s") % (int)eid % label);
+              GR_LOG_DEBUG(d_logger, (format("[ensemble label] (EId 0x%04x): %s") % (int)eid % label).str());
               // write json for ensemble label and ID
               std::stringstream ss;
               ss << "{" << "\"" << label << "\":{" << "\"EId\":" << (int)eid << "}}";
@@ -427,7 +427,7 @@ namespace gr {
                 if (label[i] >= 0x20 && label[i] <= 0x7e) { } // ASCII printable characters
                 else label[i] = '`'; // Temporarily replacing invalid characters with ` to avoid encoding problems in Python FIXME
               }
-              GR_LOG_DEBUG(d_logger, format("[programme service label] (SId 0x%04x): %s") % (int)sid % label);
+              GR_LOG_DEBUG(d_logger, (format("[programme service label] (SId 0x%04x): %s") % (int)sid % label).str());
               // write service labels from services to json
               if (d_service_labels_written_trigger < 0) {
                 d_service_labels_written_trigger = (int)sid;
@@ -454,35 +454,35 @@ namespace gr {
               if (pd == 1) { // 32 bits
                 sid = (uint32_t)data[3] << 24 | (uint32_t)data[4] << 16 | (uint32_t)data[5] << 8 | (uint32_t)data[6];
                 memcpy(label, &data[7], 16);
-                GR_LOG_DEBUG(d_logger, format("[service component label] (SId 0x%08x, SCIdS %d): %s")
-                             % (int)sid % (int)scids % label);
+                GR_LOG_DEBUG(d_logger, (format("[service component label] (SId 0x%08x, SCIdS %d): %s")
+                             % (int)sid % (int)scids % label).str());
               } else { // 16 bits
                 sid = (uint16_t)data[3] << 8 | (uint16_t)data[4];
                 memcpy(label, &data[5], 16);
-                GR_LOG_DEBUG(d_logger, format("[service component label] (SId 0x%04x, SCIdS %d): %s")
-                             % (int)sid % (int)scids % label);
+                GR_LOG_DEBUG(d_logger, (format("[service component label] (SId 0x%04x, SCIdS %d): %s")
+                             % (int)sid % (int)scids % label).str());
               }
               break;
             }
             case FIB_SI_EXTENSION_DATA_SERVICE_LABEL: {
               uint32_t sid = (uint32_t)data[2] << 24 | (uint32_t)data[3] << 16 | (uint32_t)data[4] << 8 | (uint32_t)data[5];
               memcpy(label, &data[6], 16);
-              GR_LOG_DEBUG(d_logger, format("[data service label] (SId 0x%08x): %s") % (int)sid % label);
+              GR_LOG_DEBUG(d_logger, (format("[data service label] (SId 0x%08x): %s") % (int)sid % label).str());
               break;
             }
             default:
-              GR_LOG_DEBUG(d_logger, format("[unknown extension (%d)") % (int) extension);
+              GR_LOG_DEBUG(d_logger, (format("[unknown extension (%d)") % (int) extension).str());
               break;
           }
           break;
         }
         case FIB_FIG_TYPE_LABEL2:
           extension = (uint8_t)(data[1] & 0x07);
-          GR_LOG_DEBUG(d_logger, format("FIG %d/%d: not supported yet") % (int)type % (int)extension);
+          GR_LOG_DEBUG(d_logger, (format("FIG %d/%d: not supported yet") % (int)type % (int)extension).str());
           break;
         case FIB_FIG_TYPE_FIDC:
           extension = (uint8_t)(data[1] & 0x07);
-          GR_LOG_DEBUG(d_logger, format("FIG %d/%d") % (int)type % (int)extension);
+          GR_LOG_DEBUG(d_logger, (format("FIG %d/%d") % (int)type % (int)extension).str());
           switch (extension) {
             case FIB_FIDC_EXTENSION_PAGING:
               GR_LOG_DEBUG(d_logger, "paging - not supported yet");
@@ -494,14 +494,14 @@ namespace gr {
               GR_LOG_DEBUG(d_logger, "EWS (emergency warning service) - not supported yet");
               break;
             default:
-              GR_LOG_DEBUG(d_logger, format("unsupported extension (%d)") % (int) extension);
+              GR_LOG_DEBUG(d_logger, (format("unsupported extension (%d)") % (int) extension).str());
           }
           break;
         case FIB_FIG_TYPE_CA:
           GR_LOG_DEBUG(d_logger, "FIG type 6 CA (conditional access): not supported yet");
           break;
         default:
-          GR_LOG_DEBUG(d_logger, format("FIG type %d: unsupported") % (int)type);
+          GR_LOG_DEBUG(d_logger, (format("FIG type %d: unsupported") % (int)type).str());
           break;
       }
       return 0;
